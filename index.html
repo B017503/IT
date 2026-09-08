@@ -1,0 +1,1288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cyber Security &amp; Incident Management — Revision</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#171e33;
+  --navy-2:#212b49;
+  --paper:#ffffff;
+  --page:#f3f4f7;
+  --line:#e3e5ea;
+  --ink:#1a1c24;
+  --ink-dim:#61646f;
+  --brick:#a8392f;
+  --brick-soft:#f7e6e3;
+  --brick-dim:#822c25;
+  --gold:#b8862b;
+  --gold-soft:#f6ecd9;
+  --success:#1f7a4c;
+  --success-soft:#e4f4ea;
+  --danger:#b23b30;
+  --danger-soft:#fbe8e6;
+  --radius:14px;
+  --maxw:1000px;
+  --shadow:0 1px 2px rgba(23,30,51,.04), 0 10px 24px rgba(23,30,51,.06);
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0;
+  background:var(--page);
+  color:var(--ink);
+  font-family:'Inter', sans-serif;
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+}
+::selection{background:var(--brick-soft); color:var(--brick-dim);}
+h1,h2,h3,h4{
+  font-family:'Fraunces', serif;
+  font-weight:600;
+  color:var(--navy);
+  line-height:1.2;
+  margin:0;
+}
+p{margin:0;}
+button{font-family:inherit;}
+.mono{font-family:'IBM Plex Mono', monospace;}
+
+/* ============ TOP BAR ============ */
+.topbar{
+  position:sticky; top:0; z-index:50;
+  background:rgba(255,255,255,.9);
+  backdrop-filter:blur(8px);
+  border-bottom:1px solid var(--line);
+}
+.topbar-inner{
+  max-width:1160px; margin:0 auto;
+  display:flex; align-items:center; gap:14px;
+  padding:14px 24px;
+}
+.brand{font-family:'Fraunces',serif; font-weight:600; font-size:16px; color:var(--navy); white-space:nowrap;}
+.brand span{color:var(--brick);}
+.back-btn{
+  display:flex; align-items:center; gap:6px;
+  background:var(--page); border:1px solid var(--line); color:var(--ink);
+  padding:8px 14px; border-radius:20px; cursor:pointer; font-size:13.5px; font-weight:500;
+}
+.back-btn:hover{background:#eceef2;}
+.back-btn[hidden]{display:none;}
+
+/* ============ VIEW SWITCHING ============ */
+.view{display:none;}
+.view.active{display:block;}
+
+/* ============ HOME / HERO ============ */
+.hero{
+  background:linear-gradient(160deg, var(--navy), var(--navy-2));
+  color:#f2f3f7;
+  padding:64px 24px 54px;
+}
+.hero-inner{max-width:var(--maxw); margin:0 auto;}
+.hero .kicker{
+  color:#d9a969; font-family:'IBM Plex Mono',monospace; font-size:12.5px;
+  letter-spacing:.03em; margin-bottom:14px;
+}
+.hero h1{font-size:clamp(30px,4.4vw,46px); color:#fff; max-width:18ch; margin-bottom:16px;}
+.hero p.lede{color:#c2c6d6; max-width:62ch; font-size:16.5px; font-family:'Inter';}
+.hero .stats{display:flex; gap:0; margin-top:34px; flex-wrap:wrap; border-top:1px solid rgba(255,255,255,.14); padding-top:24px;}
+.hero .stat{padding-right:36px; margin-right:36px; border-right:1px solid rgba(255,255,255,.14);}
+.hero .stat:last-child{border-right:none;}
+.hero .stat b{display:block; font-family:'Fraunces',serif; font-size:26px; color:#fff; font-weight:600;}
+.hero .stat span{color:#a7abbd; font-size:12.5px;}
+
+.section-wrap{max-width:var(--maxw); margin:0 auto; padding:50px 24px 80px;}
+.section-head{margin-bottom:26px;}
+.section-head h2{font-size:24px; margin-bottom:8px;}
+.section-head p{color:var(--ink-dim); max-width:60ch; font-size:15px;}
+
+/* ============ LESSON GRID (home) ============ */
+.lesson-grid{
+  display:grid; grid-template-columns:repeat(2, 1fr); gap:18px;
+}
+@media(max-width:720px){.lesson-grid{grid-template-columns:1fr;}}
+.lesson-card{
+  text-align:left;
+  background:var(--paper); border:1px solid var(--line); border-radius:var(--radius);
+  padding:22px; cursor:pointer; box-shadow:var(--shadow);
+  transition:transform .15s, box-shadow .15s;
+  display:flex; flex-direction:column; gap:12px;
+}
+.lesson-card:hover{transform:translateY(-2px); box-shadow:0 4px 8px rgba(23,30,51,.06), 0 16px 30px rgba(23,30,51,.09);}
+.lesson-card .num{
+  font-family:'IBM Plex Mono',monospace; font-size:12.5px; color:var(--brick);
+  background:var(--brick-soft); display:inline-block; padding:3px 9px; border-radius:6px; width:fit-content;
+}
+.lesson-card h3{font-size:19px; color:var(--navy);}
+.lesson-card p{color:var(--ink-dim); font-size:14px; flex-grow:1;}
+.lesson-card .meta{
+  display:flex; align-items:center; gap:6px; color:var(--ink-dim); font-size:12.5px;
+  padding-top:10px; border-top:1px solid var(--line);
+}
+.lesson-card .meta b{color:var(--navy); font-weight:600;}
+
+.mixed-card{
+  margin-top:26px;
+  background:linear-gradient(135deg, var(--navy), var(--navy-2));
+  border-radius:var(--radius);
+  padding:30px 32px;
+  display:flex; align-items:center; justify-content:space-between; gap:24px;
+  color:#fff;
+}
+.mixed-card .txt h3{color:#fff; font-size:21px; margin-bottom:8px;}
+.mixed-card .txt p{color:#c2c6d6; font-size:14.5px; max-width:46ch;}
+.mixed-card button{
+  flex-shrink:0;
+  background:#fff; color:var(--navy); border:none; font-weight:600;
+  padding:13px 24px; border-radius:24px; cursor:pointer; font-size:14.5px;
+  font-family:'Fraunces',serif;
+}
+@media(max-width:640px){.mixed-card{flex-direction:column; align-items:flex-start;}}
+
+/* ============ LESSON PAGE ============ */
+.lesson-page{display:none;}
+.lesson-page.current{display:block;}
+.lesson-page-inner{max-width:760px; margin:0 auto; padding:44px 24px 90px;}
+.lesson-page .eyebrow{
+  color:var(--brick); font-family:'IBM Plex Mono',monospace; font-size:12.5px; margin-bottom:10px;
+}
+.lesson-page h2{font-size:30px; margin-bottom:12px;}
+.lesson-page .lede{color:var(--ink-dim); font-size:15.5px; max-width:64ch; margin-bottom:32px; display:block;}
+
+.card{
+  background:var(--paper);
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  padding:20px 22px;
+  margin-bottom:16px;
+  box-shadow:var(--shadow);
+}
+.card h4{font-size:16.5px; margin-bottom:10px; color:var(--navy);}
+.card ul{margin:0; padding-left:20px;}
+.card li{margin-bottom:6px;}
+.card p{margin:0 0 8px;}
+.card p:last-child{margin-bottom:0;}
+
+.grid2{display:grid; grid-template-columns:1fr 1fr; gap:16px;}
+@media(max-width:640px){.grid2{grid-template-columns:1fr;}}
+
+.term{
+  display:inline-block; background:var(--gold-soft); border:1px solid var(--line);
+  color:var(--gold); font-family:'IBM Plex Mono',monospace; font-size:12.5px;
+  padding:1px 7px; border-radius:5px;
+}
+
+.case-study{
+  border-left:3px solid var(--gold);
+  padding:16px 20px; background:var(--gold-soft);
+  border-radius:0 var(--radius) var(--radius) 0; margin:20px 0;
+}
+.case-study .tag{color:var(--gold); font-family:'IBM Plex Mono',monospace; font-size:11.5px; text-transform:uppercase; letter-spacing:.05em;}
+.case-study h4{margin:6px 0 8px; font-size:17px; color:var(--navy);}
+
+.exam-q{
+  background:var(--paper); border:1px solid var(--line); border-radius:var(--radius);
+  padding:18px 20px; margin:16px 0; box-shadow:var(--shadow);
+}
+.exam-q .marks{
+  float:right; font-family:'IBM Plex Mono',monospace; font-size:11.5px;
+  color:#fff; background:var(--brick); padding:3px 9px; border-radius:12px;
+}
+.exam-q p.q{font-weight:600; margin:0 0 10px; color:var(--navy); font-family:'Inter';}
+details.answer summary{cursor:pointer; color:var(--brick); font-size:13.5px; font-weight:600; list-style:none;}
+details.answer summary::-webkit-details-marker{display:none;}
+details.answer summary::before{content:"▸ ";}
+details.answer[open] summary::before{content:"▾ ";}
+details.answer .ans{margin-top:10px; padding-top:10px; border-top:1px dashed var(--line); color:var(--ink-dim); font-size:14.5px;}
+
+.table-wrap{overflow-x:auto; margin:16px 0;}
+.plain-table{width:100%; border-collapse:collapse; font-size:14px;}
+.plain-table th, .plain-table td{border:1px solid var(--line); padding:9px 12px; text-align:left;}
+.plain-table th{background:var(--page); color:var(--navy); font-family:'IBM Plex Mono',monospace; font-size:11.5px;}
+
+.chip-row{display:flex; flex-wrap:wrap; gap:8px; margin:10px 0 4px;}
+.chip{background:var(--page); border:1px solid var(--line); border-radius:20px; padding:5px 12px; font-size:13px; color:var(--ink);}
+
+.quiz-cta{
+  margin-top:34px; text-align:center; padding:34px 26px;
+  background:linear-gradient(135deg, var(--navy), var(--navy-2)); color:#fff;
+  box-shadow:none;
+}
+.quiz-cta h4{color:#fff; font-size:20px; margin-bottom:8px;}
+.quiz-cta p{color:#c2c6d6; font-size:14.5px; margin-bottom:18px;}
+.quiz-cta button{
+  background:#fff; color:var(--navy); border:none; font-weight:600;
+  padding:13px 26px; border-radius:24px; cursor:pointer; font-size:14.5px; font-family:'Fraunces',serif;
+}
+
+/* ============ QUIZ VIEW ============ */
+.quiz-wrap{max-width:680px; margin:0 auto; padding:44px 24px 90px;}
+.quiz-setup{background:var(--paper); border:1px solid var(--line); border-radius:var(--radius); padding:28px; box-shadow:var(--shadow);}
+.quiz-setup h3{font-size:20px; margin-bottom:4px;}
+.quiz-setup .sub{color:var(--ink-dim); font-size:14px; margin-bottom:20px; display:block;}
+.len-options{display:flex; gap:10px; flex-wrap:wrap; margin:14px 0 24px;}
+.len-btn{
+  background:var(--page); border:1px solid var(--line); color:var(--ink);
+  padding:9px 16px; border-radius:20px; cursor:pointer; font-size:14px;
+}
+.len-btn.selected{border-color:var(--brick); color:var(--brick); background:var(--brick-soft); font-weight:600;}
+.topic-filters{display:flex; flex-wrap:wrap; gap:8px; margin-bottom:24px;}
+.tf{background:var(--page); border:1px solid var(--line); color:var(--ink-dim); padding:7px 13px; border-radius:20px; cursor:pointer; font-size:13px;}
+.tf.selected{border-color:var(--navy); color:var(--navy); background:#eceef4; font-weight:600;}
+.start-btn{
+  background:var(--brick); color:#fff; border:none; font-weight:600;
+  padding:13px 28px; border-radius:24px; cursor:pointer; font-size:15px; font-family:'Fraunces',serif;
+}
+.start-btn:hover{filter:brightness(1.06);}
+
+.quiz-run{display:none;}
+.quiz-progress{display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; color:var(--ink-dim); font-size:13px;}
+.quiz-bar{height:6px; background:var(--line); border-radius:3px; overflow:hidden; margin-bottom:24px;}
+.quiz-bar-fill{height:100%; background:var(--brick); width:0%; transition:width .3s;}
+.q-card{background:var(--paper); border:1px solid var(--line); border-radius:var(--radius); padding:26px; box-shadow:var(--shadow);}
+.q-tag{color:var(--brick); font-family:'IBM Plex Mono',monospace; font-size:11.5px; text-transform:uppercase; letter-spacing:.04em; margin-bottom:10px;}
+.q-text{font-size:19px; color:var(--navy); margin:0 0 22px; font-family:'Fraunces',serif; font-weight:600; line-height:1.35;}
+.opt{
+  display:block; width:100%; text-align:left;
+  background:var(--page); border:1px solid var(--line); color:var(--ink);
+  padding:14px 16px; border-radius:10px; margin-bottom:10px; cursor:pointer; font-size:14.5px;
+  font-family:'Inter';
+}
+.opt:hover{border-color:var(--ink-dim);}
+.opt.correct{border-color:var(--success); background:var(--success-soft); color:#134a2c;}
+.opt.wrong{border-color:var(--danger); background:var(--danger-soft); color:#7a251c;}
+.opt.disabled{cursor:default;}
+.q-explain{
+  margin-top:16px; padding:15px 17px; background:var(--gold-soft); border-radius:10px;
+  border-left:3px solid var(--gold); font-size:14px; color:#5a4413; display:none;
+}
+.q-nav{display:flex; justify-content:flex-end; margin-top:22px;}
+.next-btn{
+  background:var(--brick); color:#fff; border:none; font-weight:600;
+  padding:11px 24px; border-radius:22px; cursor:pointer; font-size:14.5px; opacity:.4; pointer-events:none;
+  font-family:'Fraunces',serif;
+}
+.next-btn.ready{opacity:1; pointer-events:auto;}
+.quiz-results{display:none; text-align:center; padding:10px;}
+.quiz-results .score{font-family:'Fraunces',serif; font-size:56px; color:var(--brick); margin:8px 0; font-weight:700;}
+.quiz-results .msg{color:var(--ink-dim); margin-bottom:26px; font-size:15px;}
+.result-actions{display:flex; gap:12px; justify-content:center; flex-wrap:wrap;}
+.retry-btn{
+  background:var(--paper); border:1px solid var(--brick); color:var(--brick);
+  padding:12px 24px; border-radius:22px; cursor:pointer; font-size:14.5px; font-family:'Fraunces',serif; font-weight:600;
+}
+.home-btn{
+  background:var(--page); border:1px solid var(--line); color:var(--ink);
+  padding:12px 24px; border-radius:22px; cursor:pointer; font-size:14.5px; font-family:'Fraunces',serif; font-weight:600;
+}
+.review-list{text-align:left; margin-top:30px;}
+.review-list h4{margin-bottom:6px; font-size:16px;}
+.review-item{padding:14px 0; border-bottom:1px solid var(--line); font-size:13.5px;}
+.review-item .rq{color:var(--navy); margin-bottom:4px; font-weight:600;}
+.review-item .ra{color:var(--ink-dim);}
+.review-item .ra.wrong-note{color:var(--danger);}
+
+footer{max-width:var(--maxw); margin:0 auto; padding:20px 24px 50px; color:var(--ink-dim); font-size:13px;}
+
+@media(max-width:640px){
+  .hero{padding:40px 20px 40px;}
+  .hero .stat{padding-right:22px; margin-right:22px;}
+  .section-wrap{padding:36px 18px 60px;}
+  .lesson-page-inner{padding:32px 18px 70px;}
+  .quiz-wrap{padding:32px 18px 70px;}
+  .card, .exam-q{padding:16px;}
+  .q-card{padding:20px;}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <button class="back-btn" id="backBtn" hidden>&larr; Back</button>
+    <div class="brand">Unit 2 <span>&middot; Cyber Security</span></div>
+  </div>
+</div>
+
+<main id="app">
+
+  <!-- ============ HOME VIEW ============ -->
+  <section class="view active" id="view-home">
+    <div class="hero">
+      <div class="hero-inner">
+        <div class="kicker">BTEC LEVEL 3 NATIONAL IT &middot; EXTENDED CERTIFICATE</div>
+        <h1>Cyber security threats, vulnerabilities &amp; attack vectors</h1>
+        <p class="lede">This pulls together everything from your 2.1–2.12 slide decks — internal and external threats, the cost of a credible threat, the organisations that track them, system vulnerabilities, and attack vectors — into one revision resource, with quizzes to test recall lesson by lesson or across the whole topic.</p>
+        <div class="stats">
+          <div class="stat"><b>8</b><span>topics covered</span></div>
+          <div class="stat"><b>7</b><span>real case studies</span></div>
+          <div class="stat"><b>72</b><span>quiz questions</span></div>
+          <div class="stat"><b>90 min</b><span>exam: 2hr 15, 90 marks</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-wrap">
+      <div class="section-head">
+        <h2>Choose a topic</h2>
+        <p>Tap a lesson to read the notes, case study and mock exam questions, then take that lesson's quiz whenever you're ready.</p>
+      </div>
+      <div class="lesson-grid" id="lessonGrid">
+        <!-- cards injected by JS from LESSONS -->
+      </div>
+
+      <div class="mixed-card">
+        <div class="txt">
+          <h3>Full mixed practice</h3>
+          <p>All 72 questions, any topic, shuffled fresh every attempt — closest thing to sitting the real paper.</p>
+        </div>
+        <button id="mixedQuizBtn">Start mixed quiz</button>
+      </div>
+    </div>
+
+    <footer>Built from your 2.1–2.12 lesson slides for Unit 2: Cyber Security &amp; Incident Management. Good luck with the exam.</footer>
+  </section>
+
+  <!-- ============ LESSON VIEW ============ -->
+  <section class="view" id="view-lesson">
+
+    <div class="lesson-page" data-lesson="internal">
+      <div class="lesson-page-inner">
+        <div class="eyebrow">LESSON 2.1</div>
+        <h2>Internal Threats</h2>
+        <span class="lede">Threats that originate from people already inside an organisation — employees, contractors, or third-party vendors — which is exactly why they're often harder to spot: the person already has legitimate access.</span>
+
+        <div class="card">
+          <h4>What makes a threat "internal"?</h4>
+          <ul>
+            <li>Comes from someone within the organisation — staff, contractors, vendors.</li>
+            <li>Can be <span class="term">accidental</span> (human error, negligence) or <span class="term">deliberate</span> (malicious intent).</li>
+            <li>Harder to detect than external attacks because the perpetrator already has system or data access.</li>
+          </ul>
+        </div>
+
+        <div class="grid2">
+          <div class="card">
+            <h4>Employee sabotage</h4>
+            <p><strong>Theft or loss</strong> — physical equipment (laptops, USB drives, phones), data (client lists, financial info), or software/licences (copying proprietary code).</p>
+            <p><strong>Unauthorised software</strong> — legal risk from breaching licences, compatibility problems, malicious uses (keyloggers, spy tools), or used deliberately to bypass monitoring.</p>
+          </div>
+          <div class="card">
+            <h4>Accidental or deliberate damage</h4>
+            <p><strong>Accidental:</strong> fire/smoke damage, water/flood damage from burst pipes, power outages corrupting unsaved data.</p>
+            <p><strong>Deliberate:</strong> insider sabotage during disputes, terrorism/vandalism, tampering with backup systems or power sources.</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <h4>Weak cyber security &amp; unsafe practices</h4>
+          <div class="chip-row">
+            <span class="chip">Unlocked terminals</span>
+            <span class="chip">Unattended storage devices</span>
+            <span class="chip">Poor visitor security</span>
+            <span class="chip">Unsafe website use</span>
+            <span class="chip">No 2FA / weak passwords</span>
+          </div>
+          <p style="margin-top:10px;">Each of these creates a vulnerability an attacker can exploit, or lets data be exposed by accident.</p>
+        </div>
+
+        <div class="card">
+          <h4>Accidental loss or disclosure — key causes</h4>
+          <ul>
+            <li><strong>Human error</strong> — e.g. emailing the wrong recipient.</li>
+            <li><strong>Lack of training</strong> — staff unaware of phishing tactics.</li>
+            <li><strong>Procedures not followed</strong> — unencrypted data shared.</li>
+            <li><strong>Poor monitoring</strong> — threats not caught early.</li>
+            <li><strong>Weak security culture</strong> — no incentive to report issues.</li>
+          </ul>
+        </div>
+
+        <div class="case-study">
+          <div class="tag">Case study</div>
+          <h4>Disgruntled employee, logistics company</h4>
+          <p>A disgruntled employee installs unauthorised keystroke-logging software that sends data to a personal email. The company later suffers a breach involving customer delivery data — a direct line from unauthorised software → data theft → reputational and financial damage.</p>
+        </div>
+
+        <div class="exam-q">
+          <span class="marks">4 marks</span>
+          <p class="q">Give two examples of internal cyber security threats caused by employees, and explain how each one can impact an organisation.</p>
+          <details class="answer"><summary>Show model answer</summary>
+            <div class="ans"><strong>Theft of data</strong> — an employee deliberately copies/steals sensitive files, risking a data breach and legal action. <strong>Use of unauthorised software</strong> — installing software without approval can introduce malware or compatibility issues, causing system failures or new vulnerabilities.</div>
+          </details>
+        </div>
+        <div class="exam-q">
+          <span class="marks">6 marks</span>
+          <p class="q">An organisation suffers a breach after an employee visits an untrustworthy website and downloads malicious software. Discuss the internal weaknesses that contributed and how to prevent recurrence.</p>
+          <details class="answer"><summary>Show model answer</summary>
+            <div class="ans">Likely a mix of weak controls and human error: no effective web filtering/endpoint protection, poor training so the employee didn't recognise the risk, a weak security culture that doesn't encourage safe practice or reporting, and insufficient monitoring to catch it early. <strong>Prevention:</strong> strict web filtering and malware detection, regular awareness training, clear acceptable-use policies, and active network monitoring.</div>
+          </details>
+        </div>
+
+        <div class="quiz-cta card">
+          <h4>Ready to test yourself?</h4>
+          <p id="quizMeta-internal">10 questions on internal threats, shuffled fresh each time.</p>
+          <button class="lesson-quiz-btn" data-topic="Internal threats" data-lesson="internal">Take the Internal Threats quiz</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="lesson-page" data-lesson="malware">
+      <div class="lesson-page-inner">
+        <div class="eyebrow">LESSON 2.2 – 2.3</div>
+        <h2>Malware</h2>
+        <span class="lede">External threats come from outside the organisation. This is the first of four external-threat categories — malicious software.</span>
+
+        <div class="card">
+          <h4>Viruses — 9 types to know</h4>
+          <div class="table-wrap">
+            <table class="plain-table">
+              <tr><th>Type</th><th>What it does</th></tr>
+              <tr><td>Boot sector</td><td>Infects the startup sector of storage</td></tr>
+              <tr><td>Web script</td><td>Injected into webpages</td></tr>
+              <tr><td>Macro</td><td>Hidden inside documents/spreadsheets</td></tr>
+              <tr><td>Worm</td><td>Self-replicates across systems</td></tr>
+              <tr><td>Rootkit</td><td>Hides malware activity from the OS</td></tr>
+              <tr><td>Trojan horse</td><td>Disguised as legitimate software</td></tr>
+              <tr><td>Browser hijacker</td><td>Redirects web traffic</td></tr>
+              <tr><td>Polymorphic virus</td><td>Changes its own code to avoid detection</td></tr>
+              <tr><td>TSR resident</td><td>Stays resident in memory, slows performance, opens weaknesses</td></tr>
+            </table>
+          </div>
+        </div>
+
+        <div class="grid2">
+          <div class="card">
+            <h4>Spyware</h4>
+            <p>Covert software that steals data or monitors activity.</p>
+            <ul>
+              <li><strong>Keyloggers</strong> — record keystrokes to steal credentials</li>
+              <li><strong>System monitors</strong> — track all user behaviour</li>
+              <li><strong>Stalkerware / mobile trackers</strong> — GPS, calls, messages</li>
+              <li><strong>Web beacons / cookies</strong> — advertising &amp; tracking</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h4>Adware</h4>
+            <ul>
+              <li><strong>Legitimate adware</strong> — shows ads in exchange for free use</li>
+              <li><strong>PUPs</strong> (Potentially Unwanted Programs) — installed without real consent</li>
+              <li><strong>Abusive/deceptive adware</strong> — can be illegal or intrusive</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h4>Ransomware</h4>
+            <ul>
+              <li><strong>Encryptors</strong> — lock files until a ransom is paid</li>
+              <li><strong>Lockers</strong> — block access to the whole system</li>
+              <li><strong>Scareware</strong> — fake threats to force payment</li>
+              <li><strong>Leakware/doxware</strong> — threatens to publish stolen data</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h4>Bots</h4>
+            <p>Programs that automate tasks; malicious bots form <strong>botnets</strong> used for spam, DoS attacks, and crypto-mining. Remote-controlled by attackers, they can install further malware.</p>
+          </div>
+        </div>
+
+        <div class="case-study">
+          <div class="tag">Case study</div>
+          <h4>Colonial Pipeline, 2021</h4>
+          <p>A ransomware attack shut down Colonial Pipeline in the US, disrupting fuel supply across the East Coast. Attackers demanded a large cryptocurrency ransom — a real example of how ransomware can hit critical national infrastructure, not just single businesses.</p>
+        </div>
+
+        <div class="exam-q">
+          <span class="marks">4 marks</span>
+          <p class="q">Identify two types of vulnerabilities related to software and explain how they can be exploited by attackers.</p>
+          <details class="answer"><summary>Show model answer</summary>
+            <div class="ans">Operating System vulnerabilities — attackers can exploit unpatched OS flaws to gain unauthorised access. Software bugs — bugs in applications can allow malware injection or data leaks.</div>
+          </details>
+        </div>
+
+        <div class="quiz-cta card">
+          <h4>Ready to test yourself?</h4>
+          <p>10 questions on malware, shuffled fresh each time.</p>
+          <button class="lesson-quiz-btn" data-topic="Malware" data-lesson="malware">Take the Malware quiz</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="lesson-page" data-lesson="hacking">
+      <div class="lesson-page-inner">
+        <div class="eyebrow">LESSON 2.4 – 2.5</div>
+        <h2>Hacking &amp; Sabotage</h2>
+        <span class="lede">Two more external threat categories: unauthorised access to systems, and deliberate destruction or disruption of them.</span>
+
+        <div class="grid2">
+          <div class="card">
+            <h4>Hacking</h4>
+            <p>Unauthorised access to systems or data, carried out by:</p>
+            <ul>
+              <li>Individuals (black-hat hackers)</li>
+              <li>Companies (corporate espionage)</li>
+              <li>Governments (cyberwarfare)</li>
+            </ul>
+            <p><strong>Types:</strong> Denial of Service (DoS/DDoS) overwhelms a system; browser hijacking redirects traffic; data theft/tampering hits the back-end (databases) or front-end (web forms).</p>
+          </div>
+          <div class="card">
+            <h4>Sabotage</h4>
+            <p>Intentional destruction or disruption of digital or physical systems.</p>
+            <ul>
+              <li><strong>Data poisoning</strong> — corrupting training data/analytics</li>
+              <li><strong>Data tampering</strong> — unauthorised alteration of data</li>
+              <li><strong>Data destruction</strong> — deleting or altering records</li>
+              <li><strong>Fake content</strong> — deepfakes, forged AI-generated documents</li>
+              <li><strong>Hijacking devices</strong> — machinery, IoT, vehicles, infrastructure</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="quiz-cta card">
+          <h4>Ready to test yourself?</h4>
+          <p>10 questions on hacking &amp; sabotage, shuffled fresh each time.</p>
+          <button class="lesson-quiz-btn" data-topic="Hacking & sabotage" data-lesson="hacking">Take the Hacking &amp; Sabotage quiz</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="lesson-page" data-lesson="social">
+      <div class="lesson-page-inner">
+        <div class="eyebrow">LESSON 2.6 – 2.7</div>
+        <h2>Social Engineering &amp; Physical Security</h2>
+        <span class="lede">The last two external threat categories: deceiving people, and exploiting physical access.</span>
+
+        <div class="card">
+          <h4>Social engineering — deception to gain access</h4>
+          <div class="table-wrap">
+            <table class="plain-table">
+              <tr><th>Type</th><th>Method</th></tr>
+              <tr><td>Phishing</td><td>Email-based trickery</td></tr>
+              <tr><td>Vishing</td><td>Voice call deception</td></tr>
+              <tr><td>Smishing</td><td>Fake SMS messages</td></tr>
+              <tr><td>Whaling</td><td>Targets executives specifically</td></tr>
+              <tr><td>Spear phishing</td><td>Highly targeted messages</td></tr>
+              <tr><td>DNS spoofing</td><td>Redirects users to fake websites</td></tr>
+              <tr><td>Pretexting</td><td>Pretending to be someone trusted (e.g. an IT technician)</td></tr>
+            </table>
+          </div>
+        </div>
+
+        <div class="grid2">
+          <div class="card">
+            <h4>Physical threats to secure areas</h4>
+            <ul>
+              <li>Tailgating</li>
+              <li>Forced entry</li>
+              <li>Impersonation</li>
+              <li>Coercion</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h4>Physical threats to devices</h4>
+            <ul>
+              <li>Shoulder surfing</li>
+              <li>Unattended devices</li>
+              <li>Lost/stolen equipment</li>
+              <li>Tampered public interfaces</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="case-study">
+          <div class="tag">Case study</div>
+          <h4>Government agency phishing attack</h4>
+          <p>Hackers deploy malware through a phishing campaign and gain access to sensitive national data. Likely chain: phishing email → malware installed → backdoor/credential logging → lateral access. Contributing weaknesses: poor email filtering, no MFA, weak network segmentation, untrained staff. Fix: staff training, advanced email filtering &amp; anti-malware tools, stronger access controls.</p>
+        </div>
+
+        <div class="exam-q">
+          <span class="marks">4 marks</span>
+          <p class="q">Define social engineering and give two examples of how it can be used to gain access to secure information.</p>
+          <details class="answer"><summary>Show model answer</summary>
+            <div class="ans">Social engineering is the use of deception to manipulate individuals into revealing confidential or personal information. Examples: <strong>phishing emails</strong> that appear to come from a trusted source, tricking users into entering login details; <strong>pretexting</strong>, where an attacker pretends to be an IT technician to gain access to systems or passwords.</div>
+          </details>
+        </div>
+
+        <div class="quiz-cta card">
+          <h4>Ready to test yourself?</h4>
+          <p>8 questions on social engineering &amp; physical security, shuffled fresh each time.</p>
+          <button class="lesson-quiz-btn" data-topic="Social engineering & physical" data-lesson="social">Take the Social Engineering quiz</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="lesson-page" data-lesson="credible">
+      <div class="lesson-page-inner">
+        <div class="eyebrow">LESSON 2.8</div>
+        <h2>Impact of a Credible Threat</h2>
+        <span class="lede">Five categories of loss examiners expect you to recognise and connect to a scenario: operational, financial (organisational and legal), reputational, and intellectual property.</span>
+
+        <div class="card">
+          <h4>Operational loss</h4>
+          <ul>
+            <li><strong>Manufacturing output</strong> — production systems halted by malware or network failure</li>
+            <li><strong>Service availability</strong> — websites, apps or customer services go down</li>
+            <li><strong>Data availability</strong> — ransomware locks access to vital records/databases</li>
+          </ul>
+          <p>Result: disrupted business continuity and reduced performance.</p>
+        </div>
+
+        <div class="grid2">
+          <div class="card">
+            <h4>Organisational financial impact</h4>
+            <ul>
+              <li>Cash flow problems — no income while services are halted</li>
+              <li>Loss of profits — missed sales, cancelled orders</li>
+              <li>Increased insurance premiums — seen as higher risk</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h4>Financial compensation costs</h4>
+            <ul>
+              <li>Refunds for lost goods/failed services</li>
+              <li>Compensation for leaked/misused personal data</li>
+              <li>Remedial costs — credit monitoring, ID protection, IT audits</li>
+              <li>Contractual fines for failing to deliver services</li>
+              <li>Discounts/write-offs to repair customer relationships</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h4>Legal financial loss</h4>
+            <ul>
+              <li>Fines for breaching data protection law (e.g. GDPR)</li>
+              <li>Penalty payments stated in contracts</li>
+              <li>Investigation costs following a breach/outage</li>
+              <li>Legal representation fees</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h4>Reputational loss</h4>
+            <ul>
+              <li>Loss of customer trust</li>
+              <li>Negative reviews (Google, Trustpilot, social media)</li>
+              <li>Poor scores on cyber-security watchdog sites</li>
+            </ul>
+            <p style="font-size:13.5px;">Trust is hard to gain, easy to lose — this is often the <em>longest-lasting</em> cost of an attack.</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <h4>Intellectual property (IP) loss</h4>
+          <p>IP is the valuable data, knowledge or strategy a business owns. Losses include new product designs, development/testing data, organisational strategy, and trade secrets — often hard to detect until the damage is already done.</p>
+        </div>
+
+        <div class="case-study">
+          <div class="tag">Case study</div>
+          <h4>British Airways, 2018</h4>
+          <p>Hackers stole personal and payment data belonging to 400,000 customers. BA was fined £20m under GDPR, faced furious customers seeking compensation, and had to rebuild trust while investing in new security — operational, financial, legal and reputational loss all in one incident.</p>
+        </div>
+
+        <div class="exam-q">
+          <span class="marks">6 marks</span>
+          <p class="q">An organisation faces a credible threat from a known hacking group targeting its customer database. Discuss the potential consequences for its operations, finances, and reputation.</p>
+          <details class="answer"><summary>Show model answer</summary>
+            <div class="ans">Hacking could cause <strong>operational disruption</strong> if systems are taken offline to stop further breaches. There may be <strong>financial losses</strong> from emergency IT costs and potential legal fines under data protection law. If customer data leaks, the company faces <strong>reputational damage</strong> — losing client trust and future business. Long term, this can mean legal liability and lasting damage to brand credibility; proactive incident response and communication plans limit the impact.</div>
+          </details>
+        </div>
+
+        <div class="quiz-cta card">
+          <h4>Ready to test yourself?</h4>
+          <p>8 questions on credible threat impact, shuffled fresh each time.</p>
+          <button class="lesson-quiz-btn" data-topic="Impact of a credible threat" data-lesson="credible">Take the Credible Threat quiz</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="lesson-page" data-lesson="landscape">
+      <div class="lesson-page-inner">
+        <div class="eyebrow">LESSON 2.9</div>
+        <h2>Evolving Threat Landscape</h2>
+        <span class="lede">Three organisations examiners expect you to be able to name, describe, and compare.</span>
+
+        <div class="grid2">
+          <div class="card">
+            <h4>NCSC — UK</h4>
+            <p style="font-size:13.5px; color:var(--ink-dim);">National Cyber Security Centre</p>
+            <p>The UK's authority on cyber security, part of GCHQ. Works with businesses, education, government and individuals.</p>
+            <p><strong>Provides:</strong> weekly threat reports and technical briefings, malware analysis, advisories on phishing/ransomware campaigns, and practical prevention/recovery guidance.</p>
+          </div>
+          <div class="card">
+            <h4>NIST — USA</h4>
+            <p style="font-size:13.5px; color:var(--ink-dim);">National Institute of Standards and Technology</p>
+            <p>A US agency that sets global cyber security standards and maintains a comprehensive Cybersecurity Framework (CSF), focused on policy, research and guidelines.</p>
+            <p><strong>Provides:</strong> advisories/bulletins on emerging threats, risk management frameworks, incident detection/response guidance, and research publications.</p>
+          </div>
+          <div class="card" style="grid-column:1/-1;">
+            <h4>OWASP — global, non-profit</h4>
+            <p style="font-size:13.5px; color:var(--ink-dim);">Open Web Application Security Project</p>
+            <p>Focused on improving software and web application security; maintains community-driven tools and resources for developers, educators and businesses.</p>
+            <p><strong>OWASP Top 10</strong> — the regularly updated list of the most serious web risks:</p>
+            <div class="chip-row">
+              <span class="chip">Broken access control</span>
+              <span class="chip">Cryptographic failures</span>
+              <span class="chip">Injection (e.g. SQL)</span>
+              <span class="chip">Insecure design</span>
+              <span class="chip">Security misconfiguration</span>
+              <span class="chip">Vulnerable components</span>
+              <span class="chip">Auth failures</span>
+              <span class="chip">Software/data integrity failures</span>
+              <span class="chip">Logging &amp; monitoring failures</span>
+              <span class="chip">Server-side request forgery</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="case-study">
+          <div class="tag">Case study</div>
+          <h4>SolarWinds hack</h4>
+          <p>Hackers injected malware into updates of globally-used SolarWinds software, compromising US government agencies and major corporations. The attack was detected by FireEye and reported to NCSC, NIST and other global bodies — thousands of systems were silently compromised before discovery, showing why international cooperation between these organisations matters.</p>
+        </div>
+
+        <div class="exam-q">
+          <span class="marks">8 marks</span>
+          <p class="q">An IT manager wants to strengthen the company's cyber security policy, considering guidance from NIST, NCSC and OWASP.</p>
+          <details class="answer"><summary>Show model answer</summary>
+            <div class="ans">NIST provides widely-adopted frameworks like the Cybersecurity Framework (CSF), helping organisations assess and improve their security posture. NCSC gives UK-focused threat intelligence, incident-handling guidance and best practice for public and private sectors. OWASP supports secure software development through open-source resources like the OWASP Top Ten, highlighting common web vulnerabilities. Using all three, the manager can build a well-rounded policy covering technical, procedural and development risks.</div>
+          </details>
+        </div>
+
+        <div class="quiz-cta card">
+          <h4>Ready to test yourself?</h4>
+          <p>8 questions on cyber security organisations, shuffled fresh each time.</p>
+          <button class="lesson-quiz-btn" data-topic="Cyber security organisations" data-lesson="landscape">Take the Threat Landscape quiz</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="lesson-page" data-lesson="vulnerabilities">
+      <div class="lesson-page-inner">
+        <div class="eyebrow">LESSON 2.10 – 2.11</div>
+        <h2>System Vulnerabilities</h2>
+        <span class="lede">A vulnerability is a weakness or flaw — in hardware, software, processes or user behaviour — that could be exploited to gain unauthorised access or cause harm.</span>
+
+        <div class="card">
+          <h4>Network vulnerabilities</h4>
+          <p>Open or misconfigured firewall ports are a major risk. Ports can be well-known, registered, or dynamic/private (temporary).</p>
+          <div class="table-wrap">
+            <table class="plain-table">
+              <tr><th>Port</th><th>Protocol</th><th>Used for</th></tr>
+              <tr><td>21</td><td>FTP</td><td>Uploading files to a web server</td></tr>
+              <tr><td>25</td><td>SMTP</td><td>Sending &amp; receiving email</td></tr>
+              <tr><td>80</td><td>HTTP</td><td>Connecting to a web server to view pages</td></tr>
+              <tr><td>443</td><td>HTTPS</td><td>Secure web traffic</td></tr>
+            </table>
+          </div>
+          <p>Other risks: open unprotected ports, <strong>spoofing</strong> (pretending to be a trusted source), and <strong>DoS attacks</strong> that overwhelm the system.</p>
+        </div>
+
+        <div class="grid2">
+          <div class="card">
+            <h4>External storage devices</h4>
+            <p>USB/flash drives, SD cards, external hard drives, and SSDs are portable — meaning they can be stolen or deliberately used to insert malware. Organisations should have clear policies on their use, or require password protection, encryption and GPS tracking (with remote-wipe for lost devices).</p>
+          </div>
+          <div class="card">
+            <h4>Organisational vulnerabilities</h4>
+            <p><strong>Permissions/privileges</strong> — correct access level per role (read/write/execute/modify), correct account type (user/admin/system/guest), and control over which databases/services/devices a user can reach.</p>
+            <p><strong>Password policy</strong> — length rules, character restrictions, no shared/reused passwords, no personal info, minimum password age, no password sharing.</p>
+            <p><strong>Password management</strong> — password managers (device-based, synced, or cloud-based) create and store strong complex passwords; policies should also cover locking inactive accounts, onboarding/offboarding, and disabling autofill.</p>
+          </div>
+        </div>
+
+        <div class="grid2">
+          <div class="card">
+            <h4>Software vulnerabilities</h4>
+            <p>Software from untrustworthy sources or illegal downloads often hides malware or backdoors. Even trusted software can have <strong>zero-day exploits</strong> — flaws attackers use before a patch exists. Internet-facing systems without SQL injection protection are frequent targets. Regular updates and security scans are essential.</p>
+          </div>
+          <div class="card">
+            <h4>Operating systems</h4>
+            <p>Unsupported OSes and missing updates are major risks. Misconfigured security settings — in either GUI or CLI — can leave systems exposed. Keeping updates and patches applied is crucial.</p>
+          </div>
+          <div class="card">
+            <h4>Mobile devices &amp; OEM dependency</h4>
+            <p>Mobile devices depend on their Original Equipment Manufacturer (OEM) for updates. If an OEM delays or stops support, the device stays vulnerable — often without the user realising their device is unprotected.</p>
+          </div>
+          <div class="card">
+            <h4>Physical vulnerabilities</h4>
+            <p>Devices holding sensitive data can be stolen where physical security is weak. Unrestricted areas, unlocked offices, or unauthorised USB use lead to data theft or loss. Lockable cabinets, security cameras and staff ID access reduce the risk.</p>
+          </div>
+        </div>
+
+        <div class="grid2">
+          <div class="card">
+            <h4>Human processes &amp; behaviour</h4>
+            <p>People are often the weakest link — accidental leaks, shared credentials, or poor onboarding/offboarding all expose systems. Training, well-defined procedures, and regular audits help reduce human-related vulnerabilities.</p>
+          </div>
+          <div class="card">
+            <h4>Cloud &amp; IoT vulnerabilities</h4>
+            <p>Cloud computing depends on external providers — risks include default settings, third-party access, and data travelling over the internet. IoT devices often lack encryption and use default passwords; deployed by non-IT staff, they can introduce serious flaws, including eavesdropping.</p>
+          </div>
+        </div>
+
+        <div class="case-study">
+          <div class="tag">Case study</div>
+          <h4>UK healthcare breach, 2023</h4>
+          <p>A UK healthcare provider suffered a breach after: running an unpatched operating system, staff sharing admin passwords, and using a connected IoT blood-pressure monitor with no encryption. Data of 20,000 patients was compromised — three separate vulnerability types combining into one incident.</p>
+        </div>
+
+        <div class="exam-q">
+          <span class="marks">6 marks</span>
+          <p class="q">An organisation is concerned about vulnerabilities in its network and mobile devices provided by OEMs. Discuss the types of vulnerabilities and suggest ways to mitigate the risks.</p>
+          <details class="answer"><summary>Show model answer</summary>
+            <div class="ans">Network vulnerabilities include weak permissions/privileges (attackers exploit these for higher access) and poorly configured devices allowing unauthorised entry or interception. OEM mobile devices can carry built-in vulnerabilities from manufacturer defaults or delayed security updates, risking data theft or malware. <strong>Mitigation:</strong> enforce strict user permissions, regularly update software/firmware, use firewalls and intrusion detection systems, and apply device-management policies with timely patching for mobiles.</div>
+          </details>
+        </div>
+
+        <div class="quiz-cta card">
+          <h4>Ready to test yourself?</h4>
+          <p>10 questions on system vulnerabilities, shuffled fresh each time.</p>
+          <button class="lesson-quiz-btn" data-topic="System vulnerabilities" data-lesson="vulnerabilities">Take the System Vulnerabilities quiz</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="lesson-page" data-lesson="vectors">
+      <div class="lesson-page-inner">
+        <div class="eyebrow">LESSON 2.12</div>
+        <h2>Attack Vectors</h2>
+        <span class="lede">An attack vector is the route or method a cybercriminal uses to gain access to a computer or network — the "open window" a burglar would look for, translated into digital terms.</span>
+
+        <div class="card">
+          <h4>Wireless attack vectors</h4>
+          <ul>
+            <li><strong>Wi-Fi (802.11)</strong> — susceptible to man-in-the-middle attacks if unencrypted/open; weak WPA/WEP passwords are easily cracked</li>
+            <li><strong>Bluetooth</strong> — vulnerable to "bluesnarfing" or "bluejacking"; exploitable if left in discoverable mode</li>
+            <li><strong>Cellular &amp; satellite</strong> — spoofing or eavesdropping on unencrypted comms; interception possible with special hardware</li>
+            <li><strong>Infrared</strong> — rare now, but older devices' line-of-sight transmission could be intercepted</li>
+            <li><strong>NFC &amp; RFID</strong> — short range but vulnerable to cloning, skimming, or relay attacks (access cards, contactless payment)</li>
+          </ul>
+        </div>
+
+        <div class="grid2">
+          <div class="card">
+            <h4>Internet connection vectors</h4>
+            <p><strong>Connection types:</strong> copper cable (older, vulnerable to signal tapping), optical fibre (more secure, but still at risk with physical access), Wi-Fi/5G (packet sniffing, fake access points, rogue cell towers).</p>
+            <p><strong>Devices:</strong> modem/router with default credentials or outdated firmware is a prime target; 5G routers can be SIM-swapped or spoofed; wireless routers risk open ports and remote-access flaws.</p>
+          </div>
+          <div class="card">
+            <h4>Internal network access devices</h4>
+            <p><strong>Router</strong> — distributes internet access; attackable via open admin ports, DNS hijacking, firmware flaws.</p>
+            <p><strong>Switch</strong> — directs internal traffic; attackers may use MAC flooding to intercept it.</p>
+            <p><strong>Wireless Access Point (WAP)</strong> — if unsecured, gives attackers a foothold on the internal network to launch further attacks.</p>
+          </div>
+        </div>
+
+        <div class="case-study">
+          <div class="tag">Case study</div>
+          <h4>Target data breach, 2013</h4>
+          <p>Hackers accessed Target's internal network through an HVAC subcontractor's internet connection, then moved laterally inside the network — 40 million customer credit card records were stolen. Caused by poor network segmentation, weak third-party router access, and no internal traffic monitoring.</p>
+        </div>
+
+        <div class="exam-q">
+          <span class="marks">6 marks</span>
+          <p class="q">Discuss how attack vectors involving wireless, internet connections, and internal devices can lead to security incidents, and suggest mitigation strategies for each.</p>
+          <details class="answer"><summary>Show model answer</summary>
+            <div class="ans"><strong>Wireless</strong> networks can be exploited via weak encryption or default passwords, letting attackers eavesdrop or connect. <strong>Internet connections</strong> expose systems to phishing or malware through browsing/email. <strong>Internal devices</strong> (workstations, IoT) can be compromised if unsecured, giving attackers a foothold inside. <strong>Mitigation:</strong> strong Wi-Fi encryption (WPA3), regular patching of all devices, firewalls and intrusion detection, and strict access controls with network segmentation.</div>
+          </details>
+        </div>
+
+        <div class="quiz-cta card">
+          <h4>Ready to test yourself?</h4>
+          <p>8 questions on attack vectors, shuffled fresh each time.</p>
+          <button class="lesson-quiz-btn" data-topic="Attack vectors" data-lesson="vectors">Take the Attack Vectors quiz</button>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ============ QUIZ VIEW ============ -->
+  <section class="view" id="view-quiz">
+    <div class="quiz-wrap">
+
+      <div class="quiz-setup" id="quizSetup">
+        <h3 id="setupTitle">Full mixed practice</h3>
+        <span class="sub" id="setupSub">All 72 questions, shuffled — pick how many you want and which topics to include.</span>
+        <div id="setupLenBlock">
+          <h4 style="font-size:14px; margin-bottom:0;">How many questions?</h4>
+          <div class="len-options" id="lenOptions">
+            <button class="len-btn" data-len="10">10 (quick check)</button>
+            <button class="len-btn selected" data-len="20">20 (standard)</button>
+            <button class="len-btn" data-len="35">35 (deep review)</button>
+            <button class="len-btn" data-len="999">All 72</button>
+          </div>
+          <h4 style="font-size:14px; margin-bottom:0;">Topics to include</h4>
+          <div class="topic-filters" id="topicFilters"></div>
+        </div>
+        <button class="start-btn" id="startBtn">Start quiz</button>
+      </div>
+
+      <div class="quiz-run" id="quizRun">
+        <div class="quiz-progress">
+          <span id="progressLabel">Question 1 of 20</span>
+          <span id="scoreLabel">Score: 0</span>
+        </div>
+        <div class="quiz-bar"><div class="quiz-bar-fill" id="barFill"></div></div>
+        <div class="q-card">
+          <div class="q-tag" id="qTag">Internal threats</div>
+          <p class="q-text" id="qText"></p>
+          <div id="qOptions"></div>
+          <div class="q-explain" id="qExplain"></div>
+          <div class="q-nav"><button class="next-btn" id="nextBtn">Next question</button></div>
+        </div>
+      </div>
+
+      <div class="quiz-results" id="quizResults">
+        <div style="color:var(--ink-dim); font-size:14px;">You scored</div>
+        <div class="score" id="finalScore">0 / 0</div>
+        <div class="msg" id="finalMsg"></div>
+        <div class="result-actions">
+          <button class="retry-btn" id="retryBtn">Try again</button>
+          <button class="home-btn" id="homeBtn">Back to lessons</button>
+        </div>
+        <div class="review-list" id="reviewList"></div>
+      </div>
+
+    </div>
+  </section>
+
+</main>
+
+<script>
+/* ================= LESSON META ================= */
+const LESSONS = [
+  {id:'internal', num:'2.1', title:'Internal Threats', topic:'Internal threats', teaser:'Employee sabotage, accidental damage, weak practices, and accidental disclosure.'},
+  {id:'malware', num:'2.2–2.3', title:'Malware', topic:'Malware', teaser:'Viruses, spyware, adware and ransomware, and malicious bots.'},
+  {id:'hacking', num:'2.4–2.5', title:'Hacking & Sabotage', topic:'Hacking & sabotage', teaser:'Unauthorised access, DoS attacks, and deliberate system disruption.'},
+  {id:'social', num:'2.6–2.7', title:'Social Engineering & Physical', topic:'Social engineering & physical', teaser:'Phishing, vishing, pretexting, tailgating and other physical threats.'},
+  {id:'credible', num:'2.8', title:'Impact of a Credible Threat', topic:'Impact of a credible threat', teaser:'Operational, financial, legal, reputational and IP loss.'},
+  {id:'landscape', num:'2.9', title:'Evolving Threat Landscape', topic:'Cyber security organisations', teaser:'NCSC, NIST and OWASP — who tracks global threats and how.'},
+  {id:'vulnerabilities', num:'2.10–2.11', title:'System Vulnerabilities', topic:'System vulnerabilities', teaser:'Network, organisational, software, physical, human and cloud/IoT weaknesses.'},
+  {id:'vectors', num:'2.12', title:'Attack Vectors', topic:'Attack vectors', teaser:'Wireless, internet connection and internal network access routes in.'},
+];
+
+const QUESTION_COUNTS = {}; // filled once BANK is defined below
+
+/* ================= QUESTION BANK ================= */
+const BANK = [
+// ---- Internal threats (10) ----
+{topic:'Internal threats', q:'Which of these is an example of a DELIBERATE internal threat, rather than accidental?', options:['A power outage corrupting unsaved data','An employee installing keylogging software to spy on a colleague','A burst pipe damaging server hardware','An employee accidentally emailing a file to the wrong person'], correct:1, explain:'Installing keylogging software to spy on someone is intentional malicious action — the other three are accidents or environmental events.'},
+{topic:'Internal threats', q:'Why are internal threats often harder to detect than external ones?', options:['They never involve technology','The perpetrator already has legitimate access to systems or data','They only happen once a year','Firewalls automatically block them'], correct:1, explain:'Because insiders already have legitimate access, their actions can look like normal activity, making detection harder.'},
+{topic:'Internal threats', q:'An employee copies proprietary source code onto a personal USB drive before resigning. This is best classified as:', options:['A natural disaster','Theft or loss (employee sabotage)','A software vulnerability','An external hacking attempt'], correct:1, explain:'Copying and removing proprietary software/data is theft — a form of deliberate employee sabotage.'},
+{topic:'Internal threats', q:'Which of the following is a risk specifically associated with the use of unauthorised software by staff?', options:['Improved system compatibility','It can introduce keyloggers or spy tools and breach software licences','It automatically encrypts company data','It reduces IT support costs'], correct:1, explain:'Unauthorised software can carry malicious tools, cause compatibility issues, and create legal/licensing risk.'},
+{topic:'Internal threats', q:'A fire damages server hardware overnight with no one present. What category of internal threat is this?', options:['Deliberate sabotage','Social engineering','Accidental damage/event','Attack vector'], correct:2, explain:'Fire, flood, and power outages are accidental events, not the result of deliberate human action.'},
+{topic:'Internal threats', q:'Which practice is LEAST likely to contribute to a weak internal security posture?', options:['Leaving computer terminals unlocked','Enforcing two-factor authentication for all staff','Allowing unattended storage devices in open areas','Poor physical security for visitors'], correct:1, explain:'2FA strengthens security; the other three are examples of unsafe practice that create vulnerabilities.'},
+{topic:'Internal threats', q:'"Sending an email to the wrong recipient" is most closely linked to which cause of accidental disclosure?', options:['Weak security culture','Human error','Malware infection','Zero-day exploit'], correct:1, explain:'This is a classic example of human error causing accidental disclosure of information.'},
+{topic:'Internal threats', q:'A company has no clear process for staff to report suspicious activity, and no training on why it matters. This describes:', options:['A software vulnerability','A weak security culture','An external attack vector','A physical vulnerability'], correct:1, explain:'A weak security culture is defined by a lack of incentive, awareness, or training for staff to follow and report on good practice.'},
+{topic:'Internal threats', q:'In the case study of the disgruntled logistics employee, what was the ultimate consequence of the unauthorised keylogging software?', options:['Improved employee monitoring','A data breach involving customer delivery data','A pay rise for the employee','Faster network speeds'], correct:1, explain:'The keylogger sent data to the employee\'s personal email, and the company later suffered a breach of customer delivery data.'},
+{topic:'Internal threats', q:'Which of these is a genuine internal threat rather than an external one?', options:['A phishing email from a fake company','A flood in the server room','A hacker breaching a firewall remotely','A DDoS attack from a botnet'], correct:1, explain:'A flood is a physical/environmental event affecting internal systems — the others involve an outside attacker.'},
+
+// ---- Malware (10) ----
+{topic:'Malware', q:'Which virus type self-replicates and spreads across systems without needing a host file to attach to in the way a typical virus does?', options:['Macro virus','Worm','Boot sector virus','Browser hijacker'], correct:1, explain:'A worm is defined by its ability to self-replicate and spread across systems independently.'},
+{topic:'Malware', q:'A virus that changes its own code each time it spreads, to avoid antivirus detection, is called a:', options:['Rootkit','Trojan horse','Polymorphic virus','TSR resident virus'], correct:2, explain:'Polymorphic viruses alter their code on each infection specifically to evade signature-based detection.'},
+{topic:'Malware', q:'Which malware type is specifically designed to hide its own activity from the operating system?', options:['Rootkit','Web script virus','Macro virus','Browser hijacker'], correct:0, explain:'A rootkit is built to conceal malicious processes and activity from the OS and security tools.'},
+{topic:'Malware', q:'Spyware that specifically records everything a user types, aiming to steal login credentials, is a:', options:['Web beacon','Keylogger','System monitor','Stalkerware app'], correct:1, explain:'Keyloggers record keystrokes, which is exactly how they can capture usernames and passwords.'},
+{topic:'Malware', q:'"PUP" in the context of adware stands for:', options:['Publicly Used Program','Potentially Unwanted Program','Private User Portal','Protected Update Package'], correct:1, explain:'PUPs are Potentially Unwanted Programs — software installed without meaningful user consent.'},
+{topic:'Malware', q:'Ransomware that threatens to publish a victim\'s stolen data unless paid is known as:', options:['Scareware','Locker ransomware','Leakware/doxware','Encryptor ransomware'], correct:2, explain:'Leakware (or doxware) specifically threatens to leak/publish data rather than just blocking access to it.'},
+{topic:'Malware', q:'Ransomware that blocks all access to the system, rather than encrypting individual files, is called a:', options:['Locker','Encryptor','Scareware','Trojan'], correct:0, explain:'Lockers block access to the whole system rather than encrypting specific files.'},
+{topic:'Malware', q:'What is the main purpose of a malicious botnet?', options:['To speed up a victim\'s computer','To automate tasks like spam, DoS attacks, or crypto-mining across many remote-controlled devices','To provide free antivirus protection','To back up user files automatically'], correct:1, explain:'Botnets are networks of compromised, remotely-controlled devices used for spam, DDoS attacks, or crypto-mining.'},
+{topic:'Malware', q:'A virus hidden inside a Word document or spreadsheet, activated when the file is opened, is a:', options:['Boot sector virus','Macro virus','Worm','Rootkit'], correct:1, explain:'Macro viruses are embedded in document macros and run when the file is opened.'},
+{topic:'Malware', q:'In the Colonial Pipeline (2021) case study, what type of malware caused the shutdown?', options:['Spyware','Adware','Ransomware','A browser hijacker'], correct:2, explain:'A ransomware attack forced Colonial Pipeline to shut down systems, disrupting fuel supply.'},
+
+// ---- Hacking & Sabotage (10) ----
+{topic:'Hacking & sabotage', q:'An attack that floods a server with traffic until it can no longer respond to legitimate users is a:', options:['Denial of Service (DoS) attack','Rootkit installation','Pretexting attack','Zero-day exploit'], correct:0, explain:'DoS/DDoS attacks work by overwhelming a system with traffic so it cannot serve genuine users.'},
+{topic:'Hacking & sabotage', q:'Hacking carried out by one company against a rival to steal trade secrets is an example of:', options:['Cyberwarfare','Corporate espionage','Whaling','Pretexting'], correct:1, explain:'Corporate espionage describes hacking carried out by, or on behalf of, companies against competitors.'},
+{topic:'Hacking & sabotage', q:'Deliberately corrupting the training data used by an organisation\'s analytics or AI system is an example of:', options:['Data poisoning','Data destruction','Fake content','Hijacking devices'], correct:0, explain:'Data poisoning specifically refers to corrupting training data or analytics inputs.'},
+{topic:'Hacking & sabotage', q:'Using AI to create a convincing fake video of a company executive making a false statement is an example of sabotage via:', options:['Data tampering','Fake content (deepfakes)','Hijacking devices','Data poisoning'], correct:1, explain:'Deepfakes and forged AI-generated material fall under "fake content" as a sabotage method.'},
+{topic:'Hacking & sabotage', q:'Which of these is classed as a form of hacking rather than sabotage?', options:['Deleting or altering records to disrupt operations','Data theft/tampering on a back-end database','Deepfake video creation','Hijacking IoT devices'], correct:1, explain:'Unauthorised data theft or tampering with a database is a hacking technique aimed at accessing/altering data.'},
+{topic:'Hacking & sabotage', q:'Government-sponsored hacking aimed at disrupting another nation\'s infrastructure is best described as:', options:['Whaling','Cyberwarfare','Vishing','Bluesnarfing'], correct:1, explain:'Cyberwarfare refers to government-level hacking used as a tool of conflict or disruption.'},
+{topic:'Hacking & sabotage', q:'Sabotage that involves taking control of physical machinery, vehicles, or infrastructure through their digital systems is called:', options:['Hijacking devices','Data tampering','Fake content','Corporate espionage'], correct:0, explain:'Hijacking devices refers to sabotage of machinery, IoT, vehicles or infrastructure via their connected systems.'},
+{topic:'Hacking & sabotage', q:'Redirecting a website\'s traffic to a different, often malicious, destination is called:', options:['Browser hijacking','Data poisoning','Whaling','Bluejacking'], correct:0, explain:'Browser hijacking is the redirection of a user\'s web traffic without consent.'},
+{topic:'Hacking & sabotage', q:'"Data tampering" as a sabotage method refers to:', options:['Physically stealing a hard drive','Unauthorised alteration of stored data','Sending unsolicited adverts','Cracking a Wi-Fi password'], correct:1, explain:'Data tampering means altering data without authorisation, which can mislead decisions or cause harm.'},
+{topic:'Hacking & sabotage', q:'DDoS stands for:', options:['Direct Denial of Server','Distributed Denial of Service','Data Destruction of Systems','Dynamic Detection of Spyware'], correct:1, explain:'DDoS = Distributed Denial of Service, where the flood of traffic comes from many distributed sources at once.'},
+
+// ---- Social engineering & physical (8) ----
+{topic:'Social engineering & physical', q:'An attacker targets a company CEO specifically with a tailored fraudulent email. This technique is called:', options:['Smishing','Whaling','Vishing','DNS spoofing'], correct:1, explain:'Whaling specifically targets senior executives ("big fish") rather than general staff.'},
+{topic:'Social engineering & physical', q:'A fraudulent text message asking you to "confirm your bank details" is an example of:', options:['Vishing','Smishing','Pretexting','Spear phishing'], correct:1, explain:'Smishing is phishing delivered via SMS text message.'},
+{topic:'Social engineering & physical', q:'An attacker calls an employee, pretending to be from IT support, to obtain their password over the phone. This combines:', options:['Vishing and pretexting','Smishing and whaling','DNS spoofing and tailgating','Spear phishing and coercion'], correct:0, explain:'A phone call (vishing) where the attacker pretends to be someone trusted (IT support) is also pretexting.'},
+{topic:'Social engineering & physical', q:'Redirecting a user to a fraudulent website by corrupting how domain names are resolved is:', options:['DNS spoofing','Whaling','Tailgating','Shoulder surfing'], correct:0, explain:'DNS spoofing manipulates DNS resolution to redirect users to fake sites.'},
+{topic:'Social engineering & physical', q:'Following an authorised employee through a secure door without using your own access card is called:', options:['Tailgating','Shoulder surfing','Coercion','Impersonation'], correct:0, explain:'Tailgating is physically following someone through a secure entry point without authorisation.'},
+{topic:'Social engineering & physical', q:'Watching someone type their PIN or password over their shoulder is known as:', options:['Shoulder surfing','Tailgating','Pretexting','Vishing'], correct:0, explain:'Shoulder surfing is directly observing someone entering sensitive information.'},
+{topic:'Social engineering & physical', q:'A highly targeted phishing email aimed at one specific individual, using personal details to appear credible, is:', options:['Spear phishing','Smishing','Whaling','Vishing'], correct:0, explain:'Spear phishing is a targeted attack on a specific individual using personalised information, distinct from whaling (which targets executives specifically).'},
+{topic:'Social engineering & physical', q:'In the Target (2013) breach, attackers first gained access via:', options:['A phishing email to Target\'s CEO','An HVAC subcontractor\'s internet connection','A stolen employee laptop','A DDoS attack on Target\'s website'], correct:1, explain:'Attackers entered through a third-party HVAC subcontractor\'s internet connection, then moved laterally into Target\'s network.'},
+
+// ---- Credible threat impact (8) ----
+{topic:'Impact of a credible threat', q:'A ransomware attack that locks access to a hospital\'s patient records system is primarily an example of which type of loss?', options:['Reputational loss','Operational loss','Intellectual property loss','Legal financial loss'], correct:1, explain:'Locking access to vital data/records directly disrupts day-to-day operations — an operational loss.'},
+{topic:'Impact of a credible threat', q:'A company is fined under GDPR after a data breach. This is an example of:', options:['Operational loss','Legal financial loss','Intellectual property loss','Reputational loss'], correct:1, explain:'Regulatory fines for breaching data protection law fall under legal financial loss.'},
+{topic:'Impact of a credible threat', q:'Why is reputational loss often described as a "long-term" cost compared with other impacts?', options:['It is always the cheapest to fix','Trust, once lost, is hard to rebuild, unlike a one-off fine','It never affects customer behaviour','It only affects government organisations'], correct:1, explain:'Financial fines can be paid and resolved, but rebuilding customer trust can take years.'},
+{topic:'Impact of a credible threat', q:'A competitor gains access to an organisation\'s unreleased product designs through a breach. This is best classed as:', options:['Operational loss','Intellectual property loss','Legal financial loss','Reputational loss'], correct:1, explain:'Unreleased designs, strategy, and trade secrets are intellectual property — their theft is IP loss.'},
+{topic:'Impact of a credible threat', q:'Increased insurance premiums after a breach fall under which category of impact?', options:['Organisational financial impact','Intellectual property loss','Reputational loss','Operational loss'], correct:0, explain:'Higher premiums, due to being seen as higher risk, are part of the organisational financial impact.'},
+{topic:'Impact of a credible threat', q:'In the British Airways (2018) case, which types of loss did BA experience?', options:['Operational loss only','Financial loss only','Financial, legal, and reputational loss','No measurable loss'], correct:2, explain:'BA faced a £20m GDPR fine (legal financial), customer compensation claims (financial), and reputational damage.'},
+{topic:'Impact of a credible threat', q:'Compensating customers for data that was leaked or misused is an example of:', options:['Financial compensation costs','Intellectual property loss','Operational loss','Legal representation fees'], correct:0, explain:'Direct compensation payments to affected customers are financial compensation costs.'},
+{topic:'Impact of a credible threat', q:'Which of the following is an example of operational loss?', options:['A GDPR fine','A leaked customer database causing bad press','A website going offline during an attack, stopping customers from ordering','A competitor copying a product design'], correct:2, explain:'A website going down and disrupting service is a direct example of operational loss (service availability).'},
+
+// ---- Cyber security organisations (8) ----
+{topic:'Cyber security organisations', q:'The NCSC is part of which UK organisation?', options:['MI5','GCHQ','The Home Office','Ofcom'], correct:1, explain:'The National Cyber Security Centre is part of GCHQ, the UK\'s intelligence and security organisation.'},
+{topic:'Cyber security organisations', q:'Which organisation maintains the widely-used Cybersecurity Framework (CSF)?', options:['OWASP','NCSC','NIST','Interpol'], correct:2, explain:'NIST (USA) maintains the Cybersecurity Framework, a globally-adopted risk management standard.'},
+{topic:'Cyber security organisations', q:'The OWASP Top 10 is primarily focused on risks to:', options:['Physical office security','Web applications and software','Mobile network towers','Government elections'], correct:1, explain:'OWASP focuses specifically on improving the security of software and web applications.'},
+{topic:'Cyber security organisations', q:'Which of these is one of the OWASP Top 10 risk categories?', options:['Broken access control','Employee sabotage','Tailgating','Power outages'], correct:0, explain:'Broken access control is one of the ten categories in the OWASP Top 10 list of web application risks.'},
+{topic:'Cyber security organisations', q:'Which organisation issues weekly threat reports and technical briefings specifically for the UK?', options:['NIST','OWASP','NCSC','ISO'], correct:2, explain:'The NCSC provides weekly threat updates and technical briefings tailored to the UK.'},
+{topic:'Cyber security organisations', q:'In the SolarWinds hack, which organisation first detected the breach?', options:['NIST','FireEye','OWASP','Interpol'], correct:1, explain:'The security firm FireEye first detected the attack and reported it to NCSC, NIST and other bodies.'},
+{topic:'Cyber security organisations', q:'"Injection (e.g. SQL)" appears on which list?', options:['NIST Cybersecurity Framework categories','OWASP Top 10','NCSC advisory categories','GDPR compliance checklist'], correct:1, explain:'SQL injection is one of the risk categories listed in the OWASP Top 10.'},
+{topic:'Cyber security organisations', q:'Why might an IT manager consult NIST, NCSC, and OWASP together rather than just one?', options:['Because only one of them is real','Each covers different but complementary areas — frameworks, UK-specific intelligence, and web application security','Because it is a legal requirement','Because they all provide the exact same information'], correct:1, explain:'NIST gives broad frameworks, NCSC gives UK-focused intelligence, and OWASP focuses on web application security — together they build a well-rounded policy.'},
+
+// ---- System vulnerabilities (10) ----
+{topic:'System vulnerabilities', q:'Port 443 is typically used for:', options:['Unencrypted web traffic (HTTP)','File transfer (FTP)','Secure HTTPS web traffic','Sending email (SMTP)'], correct:2, explain:'Port 443 is used for secure HTTPS traffic, as opposed to port 80 which is used for standard HTTP.'},
+{topic:'System vulnerabilities', q:'A flaw in trusted software that attackers exploit before a patch is available is called a:', options:['Rootkit','Zero-day exploit','Whaling attack','Botnet'], correct:1, explain:'A zero-day exploit takes advantage of a vulnerability before developers have released a fix.'},
+{topic:'System vulnerabilities', q:'Which of these is an example of an organisational vulnerability, rather than a technical one?', options:['An unpatched operating system','A weak or poorly enforced password policy','A zero-day software exploit','An open network port'], correct:1, explain:'Password policy and permissions are organisational vulnerabilities — about procedures and management, not raw technology.'},
+{topic:'System vulnerabilities', q:'Why can mobile devices remain vulnerable even if the user wants to update them?', options:['Mobile devices cannot receive updates at all','They depend on their OEM to release updates, which may be delayed or stopped','Updates are illegal on mobile devices','Mobile devices are immune to malware'], correct:1, explain:'Mobile devices rely on their Original Equipment Manufacturer (OEM) to issue updates — if the OEM stops supporting a device, it stays exposed.'},
+{topic:'System vulnerabilities', q:'A password manager mainly helps mitigate which type of vulnerability?', options:['Organisational (password-related) vulnerabilities','Physical vulnerabilities','Network vulnerabilities','Cloud vulnerabilities'], correct:0, explain:'Password managers create and store strong, unique passwords, directly addressing weak password practices.'},
+{topic:'System vulnerabilities', q:'Why are IoT devices frequently considered a significant vulnerability?', options:['They are always more expensive than regular devices','They often lack encryption and use default passwords','They cannot connect to the internet','They are only used by large corporations'], correct:1, explain:'Many IoT devices ship with default passwords and weak or no encryption, making them easy targets.'},
+{topic:'System vulnerabilities', q:'Leaving a server cabinet unlocked in an accessible office area is an example of a:', options:['Physical vulnerability','Software vulnerability','Cloud vulnerability','Attack vector'], correct:0, explain:'Unrestricted physical access to equipment is a physical vulnerability.'},
+{topic:'System vulnerabilities', q:'Which is a key mitigation for network vulnerabilities caused by open ports?', options:['Ignoring unused ports since they cause no harm','Closing or properly securing ports that are not needed','Sharing admin passwords among staff','Disabling all firewalls for convenience'], correct:1, explain:'Closing unnecessary open ports (or securing them properly) reduces the network attack surface.'},
+{topic:'System vulnerabilities', q:'In the 2023 UK healthcare breach case study, which of these was NOT a contributing vulnerability?', options:['An unpatched operating system','Staff sharing admin passwords','A DDoS attack on the hospital website','An unencrypted IoT blood-pressure monitor'], correct:2, explain:'The case study involved an unpatched OS, shared admin passwords, and an unencrypted IoT device — a DDoS attack was not part of it.'},
+{topic:'System vulnerabilities', q:'"The correct access level for files and folders according to user role" describes which organisational control?', options:['Permissions/privileges','Password management','Zero-day patching','Network segmentation'], correct:0, explain:'This describes the allocation of permissions and privileges based on user role.'},
+
+// ---- Attack vectors (8) ----
+{topic:'Attack vectors', q:'"Bluesnarfing" is an attack vector specifically associated with:', options:['Bluetooth','NFC/RFID','Optical fibre','5G routers'], correct:0, explain:'Bluesnarfing is unauthorised access to data over a Bluetooth connection.'},
+{topic:'Attack vectors', q:'Cloning or skimming an access card is most closely associated with which wireless technology?', options:['Infrared','NFC/RFID','Satellite','Cellular'], correct:1, explain:'NFC and RFID (used in access cards and contactless payment) are vulnerable to cloning, skimming and relay attacks.'},
+{topic:'Attack vectors', q:'A router left with its factory-default login credentials is a significant risk because:', options:['It slows down the internet connection','Attackers can easily guess or find default credentials online and gain control','It automatically shares data with competitors','It voids the manufacturer\'s warranty'], correct:1, explain:'Default credentials are widely known/documented, making routers an easy target if never changed.'},
+{topic:'Attack vectors', q:'A switch on an internal network can be attacked using a technique called:', options:['MAC flooding','Whaling','Vishing','Bluejacking'], correct:0, explain:'MAC flooding overwhelms a switch\'s address table, which can let an attacker intercept traffic.'},
+{topic:'Attack vectors', q:'Which type of internet connection is described as older and more vulnerable to signal tapping?', options:['Optical fibre','Copper cable','5G','Satellite'], correct:1, explain:'Copper cable is the older technology, more susceptible to physical signal tapping than optical fibre.'},
+{topic:'Attack vectors', q:'An unsecured Wireless Access Point (WAP) is dangerous mainly because it can:', options:['Improve overall network speed','Give an attacker a foothold onto the internal network','Automatically encrypt all traffic','Replace the need for a firewall'], correct:1, explain:'An unsecured WAP can let an attacker onto the internal network, from where further attacks can be launched.'},
+{topic:'Attack vectors', q:'Setting up a fake public Wi-Fi hotspot to intercept users\' traffic is an example of:', options:['A rogue access point attack','DNS spoofing','Whaling','Tailgating'], correct:0, explain:'A rogue/fake access point tricks users into connecting so their traffic can be intercepted — a wireless attack vector.'},
+{topic:'Attack vectors', q:'In the Target (2013) breach, what internal network weakness allowed attackers to move from the HVAC system to payment systems?', options:['Strong encryption everywhere','Poor network segmentation','Excessive multi-factor authentication','Too many firewalls'], correct:1, explain:'Poor network segmentation meant attackers could move laterally from a third-party connection into sensitive systems.'},
+];
+
+BANK.forEach(q=>{ QUESTION_COUNTS[q.topic] = (QUESTION_COUNTS[q.topic]||0)+1; });
+
+/* ================= VIEW ROUTING ================= */
+const backBtn = document.getElementById('backBtn');
+let backStack = []; // holds function to call on back
+
+function showView(id){
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo({top:0, behavior:'instant' in window ? 'instant' : 'auto'});
+}
+
+function goHome(){
+  showView('view-home');
+  backBtn.hidden = true;
+  backStack = [];
+}
+
+function openLesson(lessonId){
+  document.querySelectorAll('.lesson-page').forEach(p=>p.classList.remove('current'));
+  document.querySelector(`.lesson-page[data-lesson="${lessonId}"]`).classList.add('current');
+  showView('view-lesson');
+  backBtn.hidden = false;
+  backStack = [goHome];
+}
+
+let quizReturnFn = goHome;
+function openQuiz(fromFn){
+  quizReturnFn = fromFn;
+  showView('view-quiz');
+  backBtn.hidden = false;
+  backStack = [fromFn];
+}
+
+backBtn.addEventListener('click', ()=>{
+  const fn = backStack.pop();
+  if(fn) fn();
+  else goHome();
+});
+
+/* ================= BUILD HOME LESSON CARDS ================= */
+const gridEl = document.getElementById('lessonGrid');
+LESSONS.forEach(l=>{
+  const card = document.createElement('button');
+  card.className = 'lesson-card';
+  card.innerHTML = `
+    <span class="num">${l.num}</span>
+    <h3>${l.title}</h3>
+    <p>${l.teaser}</p>
+    <div class="meta">Quiz: <b>${QUESTION_COUNTS[l.topic]} questions</b></div>
+  `;
+  card.addEventListener('click', ()=> openLesson(l.id));
+  gridEl.appendChild(card);
+});
+
+/* ================= LESSON QUIZ BUTTONS ================= */
+document.querySelectorAll('.lesson-quiz-btn').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    const topic = btn.dataset.topic;
+    const lessonId = btn.dataset.lesson;
+    startQuiz({topics:[topic], length:999, showSetup:false});
+    quizReturnFn = ()=> openLesson(lessonId);
+    backStack = [quizReturnFn];
+  });
+});
+
+/* ================= MIXED QUIZ SETUP ================= */
+const topics = [...new Set(BANK.map(q=>q.topic))];
+const topicFiltersEl = document.getElementById('topicFilters');
+topics.forEach(t=>{
+  const b = document.createElement('button');
+  b.className = 'tf selected';
+  b.textContent = t;
+  b.dataset.topic = t;
+  b.addEventListener('click', ()=> b.classList.toggle('selected'));
+  topicFiltersEl.appendChild(b);
+});
+
+let selectedLen = 20;
+document.querySelectorAll('.len-btn').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    document.querySelectorAll('.len-btn').forEach(b=>b.classList.remove('selected'));
+    btn.classList.add('selected');
+    selectedLen = parseInt(btn.dataset.len);
+  });
+});
+
+document.getElementById('mixedQuizBtn').addEventListener('click', ()=>{
+  document.getElementById('setupTitle').textContent = 'Full mixed practice';
+  document.getElementById('setupSub').textContent = 'All 72 questions, shuffled — pick how many you want and which topics to include.';
+  document.getElementById('setupLenBlock').style.display = 'block';
+  document.getElementById('quizSetup').style.display = 'block';
+  document.getElementById('quizRun').style.display = 'none';
+  document.getElementById('quizResults').style.display = 'none';
+  showView('view-quiz');
+  backBtn.hidden = false;
+  quizReturnFn = goHome;
+  backStack = [goHome];
+});
+
+document.getElementById('startBtn').addEventListener('click', ()=>{
+  const activeTopics = [...document.querySelectorAll('.tf.selected')].map(b=>b.dataset.topic);
+  startQuiz({topics: activeTopics.length ? activeTopics : topics, length: selectedLen, showSetup:false});
+});
+
+/* ================= QUIZ ENGINE ================= */
+function shuffle(arr){
+  const a = arr.slice();
+  for(let i=a.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]]=[a[j],a[i]];
+  }
+  return a;
+}
+
+let quizQueue = [];
+let currentIndex = 0;
+let score = 0;
+let answered = false;
+let wrongLog = [];
+
+function startQuiz({topics: activeTopics, length, showSetup}){
+  let pool = BANK.filter(q=>activeTopics.includes(q.topic));
+  pool = shuffle(pool);
+  const n = Math.min(length, pool.length);
+  quizQueue = pool.slice(0, n).map(q=>{
+    const optIdx = q.options.map((opt,i)=>({opt,i}));
+    const shuffledOpts = shuffle(optIdx);
+    return {
+      topic:q.topic, q:q.q, explain:q.explain,
+      options: shuffledOpts.map(o=>o.opt),
+      correct: shuffledOpts.findIndex(o=>o.i === q.correct)
+    };
+  });
+  currentIndex = 0; score = 0; wrongLog = [];
+  document.getElementById('quizSetup').style.display = showSetup ? 'block' : 'none';
+  document.getElementById('quizResults').style.display = 'none';
+  document.getElementById('quizRun').style.display = 'block';
+  showView('view-quiz');
+  renderQuestion();
+}
+
+function renderQuestion(){
+  answered = false;
+  const item = quizQueue[currentIndex];
+  document.getElementById('progressLabel').textContent = `Question ${currentIndex+1} of ${quizQueue.length}`;
+  document.getElementById('scoreLabel').textContent = `Score: ${score}`;
+  document.getElementById('barFill').style.width = `${(currentIndex/quizQueue.length)*100}%`;
+  document.getElementById('qTag').textContent = item.topic;
+  document.getElementById('qText').textContent = item.q;
+  const optsEl = document.getElementById('qOptions');
+  optsEl.innerHTML = '';
+  const explainEl = document.getElementById('qExplain');
+  explainEl.style.display='none';
+  explainEl.textContent = '';
+  document.getElementById('nextBtn').classList.remove('ready');
+
+  item.options.forEach((optText, idx)=>{
+    const btn = document.createElement('button');
+    btn.className = 'opt';
+    btn.textContent = optText;
+    btn.addEventListener('click', ()=>{
+      if(answered) return;
+      answered = true;
+      const isCorrect = idx === item.correct;
+      if(isCorrect){ score++; }
+      else { wrongLog.push({q:item.q, correctAns:item.options[item.correct], yourAns:optText}); }
+      [...optsEl.children].forEach((b,i)=>{
+        b.classList.add('disabled');
+        if(i === item.correct) b.classList.add('correct');
+        else if(i === idx) b.classList.add('wrong');
+      });
+      explainEl.textContent = item.explain;
+      explainEl.style.display = 'block';
+      document.getElementById('scoreLabel').textContent = `Score: ${score}`;
+      document.getElementById('nextBtn').classList.add('ready');
+    });
+    optsEl.appendChild(btn);
+  });
+}
+
+document.getElementById('nextBtn').addEventListener('click', ()=>{
+  if(!answered) return;
+  currentIndex++;
+  if(currentIndex >= quizQueue.length){ finishQuiz(); }
+  else { renderQuestion(); }
+});
+
+let lastQuizConfig = null;
+
+function finishQuiz(){
+  document.getElementById('quizRun').style.display='none';
+  document.getElementById('quizResults').style.display='block';
+  document.getElementById('barFill').style.width = '100%';
+  document.getElementById('finalScore').textContent = `${score} / ${quizQueue.length}`;
+  const pct = Math.round((score/quizQueue.length)*100);
+  let msg = '';
+  if(pct >= 85) msg = 'Excellent — that\'s exam-ready recall.';
+  else if(pct >= 65) msg = 'Solid, but revisit the topics you missed below.';
+  else msg = 'Worth another pass through the notes before your exam.';
+  document.getElementById('finalMsg').textContent = `${pct}% correct. ${msg}`;
+
+  const reviewEl = document.getElementById('reviewList');
+  reviewEl.innerHTML = '';
+  if(wrongLog.length > 0){
+    const heading = document.createElement('h4');
+    heading.textContent = 'Questions to review';
+    reviewEl.appendChild(heading);
+    wrongLog.forEach(w=>{
+      const div = document.createElement('div');
+      div.className = 'review-item';
+      div.innerHTML = `<div class="rq">${w.q}</div><div class="ra wrong-note">You answered: ${w.yourAns}</div><div class="ra">Correct answer: ${w.correctAns}</div>`;
+      reviewEl.appendChild(div);
+    });
+  }
+}
+
+document.getElementById('retryBtn').addEventListener('click', ()=>{
+  // re-run with the same topic set as the queue just finished
+  const topicsUsed = [...new Set(quizQueue.map(q=>q.topic))];
+  const len = quizQueue.length >= 72 ? 999 : quizQueue.length;
+  startQuiz({topics: topicsUsed, length: len, showSetup:false});
+});
+
+document.getElementById('homeBtn').addEventListener('click', ()=>{
+  quizReturnFn();
+});
+</script>
+
+</body>
+</html>

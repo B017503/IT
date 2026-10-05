@@ -1282,6 +1282,156 @@ document.getElementById('retryBtn').addEventListener('click', ()=>{
 document.getElementById('homeBtn').addEventListener('click', ()=>{
   quizReturnFn();
 });
+
+/* ================= LESSONS 2.13–2.17 ================= */
+(function(){
+const T = {tools:'Security tools & due diligence', law:'Legislation', sw:'Software & hardware security', enc:'Encryption'};
+const ul = a => '<ul>'+a.map(x=>'<li>'+x+'</li>').join('')+'</ul>';
+const card = (h,b,s) => '<div class="card"'+(s?' style="'+s+'"':'')+'><h4>'+h+'</h4>'+b+'</div>';
+const grid = a => '<div class="grid2">'+a.join('')+'</div>';
+const table = (head,rows) => '<div class="table-wrap"><table class="plain-table"><tr>'+head.map(h=>'<th>'+h+'</th>').join('')+'</tr>'+rows.map(r=>'<tr>'+r.map(c=>'<td>'+c+'</td>').join('')+'</tr>').join('')+'</table></div>';
+const chips = a => '<div class="chip-row">'+a.map(x=>'<span class="chip">'+x+'</span>').join('')+'</div>';
+const cs = (h,p) => '<div class="case-study"><div class="tag">Case study</div><h4>'+h+'</h4><p>'+p+'</p></div>';
+const ex = (m,q,a) => '<div class="exam-q"><span class="marks">'+m+' marks</span><p class="q">'+q+'</p><details class="answer"><summary>Show model answer</summary><div class="ans">'+a+'</div></details></div>';
+
+const PAGES = [
+{id:'tools', num:'2.13', title:'Cyber Security Tools', topic:T.tools, teaser:'Port scanners, network mappers, vulnerability scanners, due diligence and certification.',
+ lede:'Tools used to find weaknesses before attackers do — plus the independent reviews and certifications that prove an organisation took reasonable care.',
+ body:
+  card('Vulnerability assessment tools', table(['Tool type','What it does','Examples'],[
+   ['Port scanner','Checks which network ports are open and listening — open ports can be exploited. Finds unauthorised services and firewall weaknesses.','Nmap, Angry IP Scanner'],
+   ['Network mapper / system discovery','Identifies devices on a network and maps their relationships. Spots rogue devices, audits hardware, maps communication paths.','Nmap, Zenmap'],
+   ['Registry checker','Checks Windows registry entries for suspicious changes — malware often edits the registry to auto-run or hide.','RegScanner, CCleaner (with caution)'],
+   ['Website vulnerability scanner','Scans sites for outdated plugins, SQL injection points, weak admin portals.','OWASP ZAP, Acunetix, Netsparker'],
+   ['Vulnerability detection &amp; management software','Scans regularly, assesses risk levels, tracks patching. Used for risk prioritisation, compliance reporting, system-wide tracking.','Nessus, Qualys, Rapid7']]))+
+  grid([
+   card('Assessing user vulnerabilities','<p>Even the best hardware/software is vulnerable if users are careless. Methods:</p>'+ul(['Phishing simulations','Password audits','Behavioural analysis','Awareness-training feedback']))
+  ,card('Third-party review','<p>An independent organisation audits the system design <strong>before it goes live</strong> (e.g. a penetration tester).</p>'+ul(['Reduces bias and missed flaws','Ensures best practice is followed','Improves credibility']))
+  ,card('Due diligence','<p>Documented evidence that <strong>all reasonable steps</strong> were taken to secure a system before launch.</p>'+ul(['Regular security reviews','Using certified tools','Keeping audit trails of actions taken']))
+  ,card('Third-party certification','<p>Independent validation of security standards.</p>'+chips(['ISO/IEC 27001','Cyber Essentials (UK)','SOC 2'])+'<p style="margin-top:8px;">Builds trust, and can be required for contracts or partnerships.</p>')])+
+  cs('Equifax, 2017','Attackers exploited an unpatched Apache Struts vulnerability. Equifax had failed to scan for and apply critical updates, and 147 million customer records were stolen. Missed tools: a vulnerability scanner, a patch-management system, and an external audit.')+
+  ex(4,'Name two tools used in cyber security for detecting vulnerabilities and briefly describe their purpose.','<strong>Port scanner</strong> — checks open ports to identify possible entry points for attackers. <strong>Website vulnerability scanner</strong> — scans websites for weaknesses such as SQL injection or cross-site scripting.')+
+  ex(6,'Explain how vulnerability detection and management software supports organisations in maintaining security. Also discuss the importance of assessing user vulnerabilities and establishing due diligence.','Such software automates scanning to find security gaps and prioritise risks, so they can be patched quickly, reducing the chance of exploitation. Assessing <strong>user vulnerabilities</strong> matters because human error and weak credentials are common attack points; training and access controls reduce this. <strong>Due diligence</strong> shows the organisation actively manages its security responsibilities, meets legal requirements and demonstrates good practice, often backed by third-party certification.')},
+
+{id:'law', num:'2.14', title:'Current Legislation', topic:T.law, teaser:'GDPR, the Computer Misuse Act 1990 and the areas legislation covers.',
+ lede:'Laws exist to protect individuals, organisations and governments from cyber threats: protecting users’ rights, making sure data is handled lawfully, and punishing cybercrime.',
+ body:
+  grid([
+   card('GDPR — General Data Protection Regulation',ul(['Collect and process data <strong>lawfully, fairly and transparently</strong>','Use data only for <strong>specified purposes</strong>','Individuals have rights, e.g. the <strong>right to be forgotten</strong> and data access requests','Breaches must be reported within <strong>72 hours</strong>','Penalties up to <strong>€20 million or 4% of global turnover</strong>']))
+  ,card('Computer Misuse Act 1990','<p>Purpose: prevent unauthorised access to computer systems and data. Offences:</p>'+ul(['Unauthorised access to computer material (e.g. logging into someone’s account)','Unauthorised access with intent to commit or facilitate a crime','Unauthorised modification of computer material (e.g. spreading viruses)','Making, supplying or obtaining tools for computer misuse']))])+
+  card('Areas legislation applies to',ul(['<strong>Protection of data (storage &amp; transfer)</strong> — encryption or secure databases; HTTPS/VPN in transit','<strong>Privacy &amp; PII</strong> — name, address, phone, email; limit access to those who need it','<strong>Unauthorised access to devices</strong> — using someone’s login without permission is illegal; use strong authentication','<strong>Modification of data</strong> — editing/deleting without permission is a serious offence; logs and audit trails protect integrity']))+
+  cs('British Airways GDPR breach, 2018','Hackers accessed personal and financial information of roughly 400,000–500,000 customers (sources differ). BA had failed to protect the data properly and was fined £20 million by the UK Information Commissioner’s Office (ICO).')+
+  ex(2,'What is the main purpose of the General Data Protection Regulation (GDPR)?','To protect individuals’ personal data by regulating how organisations collect, store and use it, ensuring privacy and giving individuals control over their information.')+
+  ex(6,'Explain how the Computer Misuse Act 1990 helps to protect organisations from cyber crime, and discuss the potential consequences for someone found guilty.','The Act makes it illegal to access or modify computer systems without permission, protecting organisations from hacking, data theft and sabotage. It defines offences such as unauthorised access, data alteration and spreading malware. Consequences can include <strong>fines, imprisonment and a criminal record</strong>, which act as deterrents. It maintains trust in digital systems and encourages organisations to implement strong security.')},
+
+{id:'sw', num:'2.15–2.16', title:'Software & Hardware Security Measures', topic:T.sw, teaser:'Physical security, backups, antivirus, firewalls, authentication and access control.',
+ lede:'Layers of defence from the physical building down to the data itself.',
+ body:
+  grid([
+   card('Physical security','<p>Prevents unauthorised physical access to IT systems.</p>'+ul(['<strong>Site locks:</strong> mechanical, electronic, network-connected','<strong>Entry cards:</strong> RFID, NFC, QR, magnetic stripe, microchip','<strong>Biometrics:</strong> fingerprint, iris, face, voice, handwriting','CCTV, security staff, alarms, protected cabling, locked server cabinets, staff training']))
+  ,card('Backup, storage &amp; recovery',ul(['<strong>Full</strong> — complete copy','<strong>Differential</strong> — changes since the last <em>full</em> backup','<strong>Incremental</strong> — changes since the last backup (of any kind)','Locations: onsite, offsite, cloud. Recovery sites: <strong>hot, warm, cold</strong>','<strong>RAID</strong> = fault tolerance, <em>not</em> a backup; archiving = long-term, often offline','Recovery: file restore, image restore, full bare-metal']))
+  ,card('Antivirus','<p><strong>Detection:</strong> virus signatures, heuristic analysis (suspicious behaviour), checksums/file integrity checks.</p><p><strong>Response:</strong> warn, log, prevent execution, quarantine, delete.</p>')
+  ,card('Firewalls &amp; filtering','<p>Software or hardware; control traffic between trusted and untrusted networks.</p>'+ul(['Packet filtering &amp; inspection','Application-layer filtering','Inbound/outbound rules','IP and MAC address filtering']))
+  ,card('User authentication',ul(['<strong>Factors:</strong> knowledge (password/PIN), possession (USB key, phone, smartcard), inherence (biometrics), location/behaviour (GPS, typing rhythm)','Single-factor vs <strong>multi-factor (MFA)</strong>; security tokens','<strong>Kerberos</strong> — secure authentication; key exchange; certificate-based auth (TLS/SSL, PKI, CAs)']))
+  ,card('Access controls',ul(['<strong>DAC</strong> — owner sets access to their files','<strong>Role-based</strong> — access by job role','<strong>Rule-based</strong> — access by rules/attributes','Applied to files, folders, apps, datasets, hardware']))
+  ,card('Trusted computing','<p><strong>Benefits:</strong> increased security, system integrity.</p><p><strong>Drawbacks:</strong> reduced user control, privacy concerns (tracking, lock-in), limits on what can be installed or run.</p>')
+  ,card('Lost/stolen &amp; device-based security',ul(['GPS tracking; <strong>phone home</strong>; device-tracking software','Timed lockout after inactivity','Lock on failed logins (limits brute force)','Auto wipe/reset after too many failures; remote lock/wipe']))])+
+  cs('NHS WannaCry ransomware, 2017','Outdated Windows systems and no recent backups meant data was encrypted and systems were offline for days, hitting patient care. Helpful measures: tested offsite backups, patching, firewalls, and device-based security to limit the spread.')+
+  ex(4,'Name two methods used for data protection and briefly explain their purpose.','<strong>Backup procedures</strong> — regularly saving copies of data so it can be restored after loss or corruption. <strong>Antivirus software</strong> — detects and removes malicious software to protect data integrity.')+
+  ex(8,'Explain how software and hardware firewalls protect a network and describe two filtering techniques they use to block threats.','Firewalls act as barriers between a trusted internal network and untrusted external networks, controlling incoming and outgoing traffic to prevent unauthorised access. <strong>Packet filtering</strong> inspects packets and blocks those not meeting criteria such as IP address or port number. <strong>Stateful inspection</strong> tracks active connections and only allows packets belonging to legitimate sessions, giving more dynamic protection. Together they help block malware, hackers and other threats.')},
+
+{id:'enc', num:'2.17', title:'Encryption', topic:T.enc, teaser:'Storage vs communications encryption, symmetric vs asymmetric, HTTPS, VPNs and E2EE.',
+ lede:'Encryption scrambles data so it is unreadable without the correct key — protecting it both when stored and when sent.',
+ body:
+  grid([
+   card('Storage encryption (data at rest)',ul(['Safe password storage — <strong>hashed and salted</strong> (bcrypt, SHA)','Digital Rights Management (DRM)','File/folder/disc/device encryption: <strong>BitLocker</strong> (Windows), <strong>FileVault</strong> (macOS), <strong>VeraCrypt</strong>, mobile encryption']).replace('</ul>','</ul><p>Why it matters: stops access if a device is lost or stolen.</p>'))
+  ,card('Communications encryption (data in transit)','<p>Protects emails, messages, video calls, web browsing.</p>'+ul(['<strong>Symmetric:</strong> one shared secret key; fast but key distribution is hard — e.g. <strong>AES</strong>','<strong>Asymmetric:</strong> public key encrypts, private key decrypts; solves key sharing — e.g. <strong>RSA</strong>, Diffie–Hellman (key exchange)']))])+
+  card('Encryption in devices &amp; apps',ul(['Built-in device encryption','<strong>TOR</strong> — multiple encrypted layers for anonymity','<strong>VPN</strong> — encrypts internet traffic from your device','Secure messaging (Signal, WhatsApp) using <strong>end-to-end encryption (E2EE)</strong>','<strong>HTTPS</strong> — SSL/TLS and certificates','Digital certificates — issued by Certificate Authorities (CAs) to prove authenticity']))+
+  card('Summary table',table(['Concept','Type','Example','Purpose'],[['AES','Symmetric','File encryption','Fast data encryption'],['RSA','Asymmetric','Emails, secure browsing','Secure key exchange'],['VPN','Network encryption','Remote working','Encrypts full connection'],['HTTPS','Asymmetric','Websites','Secure web traffic'],['E2EE','Mixed','Messaging apps','Private communication']]))+
+  cs('WhatsApp &amp; end-to-end encryption','WhatsApp uses E2EE for all chats and calls — not even WhatsApp can read messages. It uses the Signal Protocol (asymmetric + symmetric). Debate: governments sometimes want access to encrypted messages, raising privacy vs security questions.')+
+  ex(2,'Explain the difference between storage encryption and communications encryption.','Storage encryption protects data saved on devices, making it unreadable without the correct key. Communications encryption secures data while it is transmitted over networks, preventing interception.')+
+  ex(4,'Discuss two security issues that must be considered during network and system design to ensure security is built in from the start.','<strong>Access control</strong> — only authorised users can access systems and data, through authentication and permissions. <strong>Secure configuration</strong> — disabling unnecessary services and applying patches to prevent exploitation. Designing with these in mind prevents attacks and reduces risk.')}
+];
+
+const Q = (t,q,o,c,e)=>({topic:t,q:q,options:o,correct:c,explain:e});
+const NEW = [
+Q(T.tools,'What is the purpose of a port scanner?',['To encrypt files on a device','To check which network ports are open and listening','To remove viruses','To back up data'],1,'Port scanners (e.g. Nmap) find open ports that attackers could exploit.'),
+Q(T.tools,'Which tool is designed to scan websites for SQL injection points and outdated plugins?',['Registry checker','OWASP ZAP','Network mapper','Password manager'],1,'OWASP ZAP, Acunetix and Netsparker are website vulnerability scanners.'),
+Q(T.tools,'Why might a registry checker be used?',['To speed up Wi-Fi','To spot suspicious Windows registry changes made by malware','To scan emails','To monitor CCTV'],1,'Malware often edits the registry to auto-run or hide itself.'),
+Q(T.tools,'Nessus, Qualys and Rapid7 are examples of:',['Port scanners','Vulnerability detection and management software','Antivirus signatures','Certification bodies'],1,'They scan regularly, assess risk and track patching.'),
+Q(T.tools,'Which method assesses USER vulnerabilities?',['Port scanning','Phishing simulations','MAC filtering','RAID'],1,'Phishing simulations, password audits and behavioural analysis target people, not systems.'),
+Q(T.tools,'In cyber security, "due diligence" means:',['Buying the most expensive software','Documented evidence that all reasonable steps were taken to secure a system','Avoiding all updates','Sharing admin passwords'],1,'Due diligence is demonstrable, documented reasonable care before launch.'),
+Q(T.tools,'Which is a third-party security certification?',['ISO/IEC 27001','GDPR','RAID','TOR'],0,'ISO/IEC 27001, Cyber Essentials and SOC 2 are certifications. GDPR is a law.'),
+Q(T.tools,'A key benefit of a third-party review before implementation is that it:',['Is always free','Reduces bias and missed flaws','Removes the need for passwords','Replaces backups'],1,'Independent reviewers bring fresh eyes and improve credibility.'),
+Q(T.tools,'In the Equifax (2017) breach, attackers exploited:',['A phishing email to the CEO','An unpatched Apache Struts vulnerability','A stolen laptop','A DDoS attack'],1,'Equifax failed to scan and apply a critical update; 147 million records were stolen.'),
+Q(T.tools,'Which tool would best help map devices and spot rogue devices on a network?',['Nmap/Zenmap network mapper','A password manager','Antivirus','A VPN'],0,'Network mappers identify connected devices and their relationships.'),
+
+Q(T.law,'Under GDPR, how soon must a breach be reported?',['24 hours','72 hours','7 days','30 days'],1,'Breaches must be reported within 72 hours.'),
+Q(T.law,'The maximum GDPR penalty is:',['£1,000','€20 million or 4% of global turnover','£100,000','Imprisonment only'],1,'Up to €20 million or 4% of global turnover.'),
+Q(T.law,'Logging into a colleague’s email because they forgot to log out breaks which law?',['Computer Misuse Act 1990','Health and Safety Act','Copyright Act','Consumer Rights Act'],0,'This is unauthorised access to computer material.'),
+Q(T.law,'Spreading a virus is an offence under the Computer Misuse Act because it is:',['Unauthorised modification of computer material','Data portability','A GDPR consent failure','Legitimate testing'],0,'Malware modifies or impairs systems without permission.'),
+Q(T.law,'Which is a right individuals have under GDPR?',['The right to be forgotten','The right to read any company’s data','The right to bypass passwords','The right to free software'],0,'People can request access to and erasure of their data.'),
+Q(T.law,'Which is an example of PII?',['A server’s IP range','A person’s name and home address','A firewall rule','A port number'],1,'PII identifies a person: name, address, phone, email.'),
+Q(T.law,'Which UK body fined British Airways £20 million in 2018’s breach case?',['NCSC','ICO','OWASP','NIST'],1,'The Information Commissioner’s Office issued the GDPR fine.'),
+Q(T.law,'Editing or deleting data without permission is classed as:',['Modification of data — a serious offence','Normal admin','Allowed if nothing is stolen','A GDPR right'],0,'Logs and audit trails help protect integrity.'),
+Q(T.law,'True or false: GDPR applies only to data on physical paper.',['True','False'],1,'GDPR covers personal data in any form, including digital.'),
+
+Q(T.sw,'Which is NOT a physical security method?',['CCTV','Firewall','Fingerprint scanner','RFID card'],1,'A firewall is a software/hardware network control.'),
+Q(T.sw,'A differential backup copies:',['All data','Data changed since the last full backup','Only today’s files','Nothing'],1,'Incremental copies changes since the last backup of any type.'),
+Q(T.sw,'Why is incremental backup more efficient than full backup?',['It copies only changes since the last backup','It encrypts data','It needs no storage','It never fails'],0,'Smaller amounts of data are copied, saving time and storage.'),
+Q(T.sw,'RAID provides:',['A complete backup','Fault tolerance, not a backup','Encryption','Antivirus'],1,'If data is deleted or corrupted, RAID mirrors that too.'),
+Q(T.sw,'A recovery site that is fully equipped and ready almost immediately is:',['Cold','Warm','Hot','Frozen'],2,'Hot sites are ready to take over; cold sites need setup.'),
+Q(T.sw,'Heuristic analysis in antivirus works by:',['Matching known signatures only','Detecting suspicious behaviour','Deleting all files','Blocking all ports'],1,'It can catch new or unknown malware by behaviour.'),
+Q(T.sw,'What does Kerberos provide?',['Backup','Antivirus scanning','Secure authentication','File encryption'],2,'Kerberos is a secure authentication protocol.'),
+Q(T.sw,'A fingerprint plus a password is an example of:',['Single-factor authentication','Multi-factor authentication','DAC','Phone home'],1,'Inherence + knowledge = two factors.'),
+Q(T.sw,'Access based on a person’s job role is:',['DAC','Role-based access control','MAC filtering','RAID'],1,'RBAC assigns permissions by role.'),
+Q(T.sw,'Locking a device after several failed logins mainly limits:',['Brute-force attacks','Power cuts','Fire damage','Phishing emails'],0,'Lockout/auto-wipe stops repeated password guessing.'),
+Q(T.sw,'Stateful inspection in a firewall:',['Ignores connections','Tracks active connections and allows only legitimate sessions','Encrypts files','Scans for viruses'],1,'It is more dynamic than basic packet filtering.'),
+Q(T.sw,'The WannaCry (2017) NHS attack was made worse by:',['Outdated Windows systems and no recent backups','Too many firewalls','Strong MFA','Encrypted laptops'],0,'Data was encrypted and systems were offline for days.'),
+
+Q(T.enc,'Storage encryption protects data:',['In transit','At rest, e.g. on a hard drive','Only in emails','Only in the cloud'],1,'Storage encryption secures saved data if a device is lost or stolen.'),
+Q(T.enc,'AES is an example of:',['Asymmetric encryption','Symmetric encryption','A firewall','A hashing salt'],1,'AES uses one shared secret key and is fast.'),
+Q(T.enc,'Asymmetric encryption uses:',['One shared key','A public key to encrypt and a private key to decrypt','No keys','Only passwords'],1,'This solves the key-sharing problem.'),
+Q(T.enc,'The main drawback of symmetric encryption is:',['It is too slow','Key distribution is difficult','It cannot encrypt files','It needs certificates'],1,'Both parties need the same secret key safely.'),
+Q(T.enc,'Which encrypts Apple device storage?',['BitLocker','FileVault','VeraCrypt only','Signal'],1,'BitLocker is Windows; FileVault is macOS.'),
+Q(T.enc,'HTTPS uses:',['SSL/TLS and certificates','Only passwords','Infrared','MAC filtering'],0,'Certificates from CAs prove a website’s authenticity.'),
+Q(T.enc,'A VPN mainly:',['Encrypts your internet traffic from your device','Scans for viruses','Backs up files','Blocks all ads'],0,'It protects the full connection, useful for remote working.'),
+Q(T.enc,'In end-to-end encryption (E2EE), who can read the messages?',['Only the sender and recipient','The app company','Any ISP','Everyone'],0,'Not even the provider (e.g. WhatsApp) can read them.'),
+Q(T.enc,'Passwords should be stored using:',['Plain text','Hashing and salting (e.g. bcrypt)','Email','Sticky notes'],1,'Hashed and salted passwords are far harder to recover if stolen.')
+];
+
+PAGES.forEach(p=>{
+  LESSONS.push({id:p.id,num:p.num,title:p.title,topic:p.topic,teaser:p.teaser});
+  const d=document.createElement('div'); d.className='lesson-page'; d.dataset.lesson=p.id;
+  d.innerHTML='<div class="lesson-page-inner"><div class="eyebrow">LESSON '+p.num+'</div><h2>'+p.title+'</h2><span class="lede">'+p.lede+'</span>'+p.body+'<div class="quiz-cta card"><h4>Ready to test yourself?</h4><p>Questions on '+p.title.toLowerCase()+', shuffled fresh each time.</p><button class="lesson-quiz-btn">Take the quiz</button></div></div>';
+  document.getElementById('view-lesson').appendChild(d);
+  d.querySelector('.lesson-quiz-btn').addEventListener('click',()=>{
+    startQuiz({topics:[p.topic],length:999,showSetup:false});
+    quizReturnFn=()=>openLesson(p.id); backStack=[quizReturnFn];
+  });
+  const n = NEW.filter(q=>q.topic===p.topic).length; QUESTION_COUNTS[p.topic]=n;
+  const c=document.createElement('button'); c.className='lesson-card';
+  c.innerHTML='<span class="num">'+p.num+'</span><h3>'+p.title+'</h3><p>'+p.teaser+'</p><div class="meta">Quiz: <b>'+n+' questions</b></div>';
+  c.addEventListener('click',()=>openLesson(p.id)); document.getElementById('lessonGrid').appendChild(c);
+  const b=document.createElement('button'); b.className='tf selected'; b.textContent=p.topic; b.dataset.topic=p.topic;
+  b.addEventListener('click',()=>b.classList.toggle('selected')); document.getElementById('topicFilters').appendChild(b);
+});
+NEW.forEach(q=>BANK.push(q));
+
+const total=BANK.length;
+document.querySelectorAll('.stat').forEach(s=>{
+  const b=s.querySelector('b'), l=s.querySelector('span').textContent;
+  if(l==='topics covered') b.textContent=LESSONS.length;
+  if(l==='real case studies') b.textContent=parseInt(b.textContent)+4;
+  if(l==='quiz questions') b.textContent=total;
+});
+const fix=()=>{
+  document.querySelectorAll('.mixed-card p, #setupSub, .len-btn[data-len="999"]').forEach(e=>{e.textContent=e.textContent.replace(/All 72/,'All '+total);});
+};
+fix();
+document.getElementById('mixedQuizBtn').addEventListener('click',fix);
+document.querySelectorAll('.hero p.lede, footer').forEach(e=>{e.textContent=e.textContent.replace(/2\.1[–-]2\.12/,'2.1–2.17');});
+})();
 </script>
 
 </body>
